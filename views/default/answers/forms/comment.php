@@ -7,7 +7,7 @@ if (isset($vars['entity']) && elgg_is_logged_in()) {
 	$container = get_entity($vars['entity']->container_guid);
 	if (!($container instanceof ElggGroup) || can_write_to_container(0, $container->getGUID())) {
 		echo "<div class=\"answers_comment\">";
-		echo "<div><a class=\"collapsibleboxlink\">" . elgg_echo('answers:comment:comment') . "</a></div>";
+		echo "<div><a rel=\"toggle\">" . elgg_echo('answers:comment:comment') . "</a></div>";
 		echo "<div class=\"collapsible_box\">";
 
 		$entity_guid = $vars['entity']->getGUID();

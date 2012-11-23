@@ -55,7 +55,7 @@ if (isset($vars['entity'])) {
 			?>
 				</div>
 				<div class="answers_answer_delete">
-					<a class="collapsibleboxlink"><?php echo elgg_echo('edit'); ?></a>
+					<a rel="toggle"><?php echo elgg_echo('edit'); ?></a>
 				</div>
 				<div class="collapsible_box" style="clear:both;">
 <?php echo elgg_view("answers/forms/editanswer", $vars); ?>

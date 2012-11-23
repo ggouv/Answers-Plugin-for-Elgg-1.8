@@ -26,7 +26,7 @@ if (isset($vars['entity'])) {
     									'is_action' => true,
 									));
 			$edit = elgg_echo('edit');
-			$full_comment_text .= "&nbsp;&nbsp;<a class=\"collapsibleboxlink\">$edit</a>";
+			$full_comment_text .= "&nbsp;&nbsp;<a rel=\"toggle\">$edit</a>";
 		}
 		
 		if ($markdown) {

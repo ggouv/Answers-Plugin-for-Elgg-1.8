@@ -6,9 +6,6 @@
 	margin:4px 0 4px 0;
 	display:none;
 }	
-a.collapsibleboxlink {
-	cursor:pointer;
-}
 
 .answers_rating {
 	display: block;
