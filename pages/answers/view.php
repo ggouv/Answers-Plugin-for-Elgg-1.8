@@ -3,8 +3,6 @@
  * View a question
  */
 
-require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
 // Get the specified question
 $post = (int) get_input('question_id');
 

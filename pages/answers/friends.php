@@ -3,8 +3,6 @@
  * Friends' questions
  */
 
-require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
 // Get the current page's owner
 $page_owner = elgg_get_logged_in_user_entity();
 if ($page_owner === false || is_null($page_owner)) {

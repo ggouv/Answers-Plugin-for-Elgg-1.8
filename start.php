@@ -73,46 +73,41 @@ function answers_init() {
  */
 function answers_page_handler($page) {
 
-	// what page are we serving
-	if (isset($page[0]) && !empty($page[0])) {
-		switch ($page[0]) {
-			case "view":
-				set_input('question_id', $page[1]);
-				include(dirname(__FILE__) . "/read.php");
-				return true;
-				break;
-			case "owner":
-				set_input('username', $page[1]);
-				include(dirname(__FILE__) . "/index.php");
-				return true;
-				break;
-			case "friends":
-				set_input('username', $page[1]);
-				include(dirname(__FILE__) . "/friends.php");
-				return true;
-				break;
-			case "ask":
-				set_input('username', $page[1]);
-				include(dirname(__FILE__) . "/add.php");
-				return true;
-				break;
-			case "group":
-				set_input('username', $page[1]);
-				include(dirname(__FILE__) . "/group.php");
-				return true;
-				break;
-			case "world":
-			default:
-				include(dirname(__FILE__) . "/everyone.php");
-				return true;
-				break;
-		}
-	} else {
-		include(dirname(__FILE__) . "/everyone.php");
-		return true;
+	elgg_push_breadcrumb(elgg_echo('answers'), 'answers/all');
+
+	$pages = dirname(__FILE__) . '/pages/answers';
+
+	switch ($page[0]) {
+		case "read":
+		case "view":
+			set_input('question_id', $page[1]);
+			include "$pages/view.php";
+			break;
+		case "owner":
+			set_input('username', $page[1]);
+			include	"$pages/owner.php";
+			break;
+		case "friends":
+			set_input('username', $page[1]);
+			include	"$pages/friends.php";
+			break;
+		case "ask":
+			set_input('username', $page[1]);
+			include	"$pages/add.php";
+			break;
+		case "group":
+			set_input('username', $page[1]);
+			include	"$pages/owner.php";
+			break;
+		case "all":
+		case "world":
+			include	"$pages/world.php";
+			break;
+		default:
+			return false;
 	}
 
-	return false;
+	return true;
 }
 
 /**

@@ -3,8 +3,6 @@
  * All site questions
  */
 
-require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
 // Get the current page's owner
 $page_owner = elgg_get_logged_in_user_entity();
 elgg_set_page_owner_guid($page_owner->guid);

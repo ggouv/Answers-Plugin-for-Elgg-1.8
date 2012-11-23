@@ -3,8 +3,6 @@
  * Create a question
  */
 
-require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
 gatekeeper();
 group_gatekeeper();
 
