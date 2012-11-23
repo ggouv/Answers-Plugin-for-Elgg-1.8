@@ -7,8 +7,6 @@
 $page_owner = elgg_get_logged_in_user_entity();
 elgg_set_page_owner_guid($page_owner->guid);
 
-//$area2 = elgg_view_title(elgg_echo("answers") . ": " . elgg_echo('answers:everyone'));
-
 $area2 = elgg_list_entities(array(
 	'type' => 'object',
 	'subtype' => 'question',

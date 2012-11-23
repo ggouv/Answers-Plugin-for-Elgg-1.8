@@ -9,7 +9,17 @@ $post = (int) get_input('question_id');
 // If we can get question ...
 $question = get_entity($post);
 
+$page_owner = elgg_get_page_owner_entity();
+
+if (elgg_instanceof($page_owner, 'group')) {
+	elgg_push_breadcrumb($page_owner->name, "answers/group/$page_owner->guid/all");
+} else {
+	elgg_push_breadcrumb($page_owner->name, "answers/owner/$page_owner->username");
+}
+
 if ($question instanceof ElggEntity && $question->getSubtype() == "question") {
+
+	elgg_push_breadcrumb($question->title);
 
 	// Set the page owner
 	if ($question->container_guid) {

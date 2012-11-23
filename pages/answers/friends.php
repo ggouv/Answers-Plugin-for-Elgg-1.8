@@ -4,14 +4,13 @@
  */
 
 // Get the current page's owner
-$page_owner = elgg_get_logged_in_user_entity();
-if ($page_owner === false || is_null($page_owner)) {
-	$page_owner = $_SESSION['user'];
-	set_page_owner($_SESSION['guid']);
+$page_owner = elgg_get_page_owner_entity();
+if (!$page_owner) {
+	forward('answers/all');
 }
-if (!($page_owner instanceof ElggEntity)) {
-	forward();
-}
+
+elgg_push_breadcrumb($page_owner->name, "answers/owner/$page_owner->username");
+elgg_push_breadcrumb(elgg_echo('friends'));
 
 //set the title
 if ($page_owner == $_SESSION['user']) {
