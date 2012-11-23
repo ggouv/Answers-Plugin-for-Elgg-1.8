@@ -4,57 +4,39 @@
  */
 
 // Get the current page's owner
-$page_owner = elgg_get_logged_in_user_entity();
-
-if ($page_owner === false || is_null($page_owner)) {
-	$page_owner = $_SESSION['user'];
-	set_page_owner($_SESSION['guid']);
+$page_owner = elgg_get_page_owner_entity();
+if (!$page_owner) {
+	forward('answers/all');
 }
-if (!($page_owner instanceof ElggEntity)) {
-	forward();
+
+elgg_push_breadcrumb($page_owner->name);
+
+$content = elgg_list_entities(array(
+	'type' => 'object',
+	'subtype' => 'question',
+	'owner_guid' => $page_owner->guid,
+	'full_view' => false,
+	'pagination' => true,
+	));
+
+if (!$content) {
+	$content = elgg_echo('answers:none');
 }
-//elgg_set_context('group_profile');
-//set the title
-$title = elgg_echo('answers:group:title');
 
-elgg_register_menu_item('title', array(
-	'name' => "answers:add",
-	'href' => $CONFIG->wwwroot . "answers/ask/group:" . $page_owner->username . "/",
-	'text' => elgg_echo("answers:add"),
-	'link_class' => 'elgg-button elgg-button-action',
-));
-$groups = elgg_get_entities_from_relationship(array('type' => 'group',
-		'relationship' => 'member',
-		'relationship_guid' => $page_owner->guid,
-		'inverse_relationship' => false,
-		'full_view' => false,));
+$title = elgg_echo('answers:owner', array($page_owner->name));
 
-foreach ($groups as $group){
-	$vars['entity'] = $group;
-	//var_dump($vars['entity']->container_guid);
-	$number = (int) $vars['entity']->num_display;
-	if (!$number) {
-		$number = 2;
-	}
+$vars = array(
+	'content' => $content,
+	'title' => $title,
+);
 
-	//get the groups questions
-	$options = array(
-		'type' => 'object',
-		'subtype' => 'question',
-		'container_guid' => $vars['entity']->guid,
-
-	);
-	$questions = elgg_get_entities($options);
-	$options['count'] = true;
-	$count = elgg_get_entities($options);
-	if ($questions) {
-
-		//display in list mode
-		foreach ($questions as $question) {
-			$area2 .= elgg_view_entity($question);
-		}
-	} 
+if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
+	$vars['filter_context'] = 'mine';
 }
-$body = elgg_view_layout("content", array('content' => $area2, 'title' => $title, 'filter_context' => 'groups'));
 
-echo elgg_view_page(elgg_echo('answers:everyone'), $body);
+if ($page_owner->type == 'group') {
+	$vars['filter'] = '';
+}
+$body = elgg_view_layout('content', $vars);
+
+echo elgg_view_page($title, $body);
