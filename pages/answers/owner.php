@@ -14,7 +14,7 @@ elgg_push_breadcrumb($page_owner->name);
 $content = elgg_list_entities(array(
 	'type' => 'object',
 	'subtype' => 'question',
-	'owner_guid' => $page_owner->guid,
+	'container_guid' => $page_owner->guid,
 	'full_view' => false,
 	'pagination' => true,
 	));
