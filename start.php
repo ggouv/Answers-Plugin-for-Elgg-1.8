@@ -15,13 +15,7 @@ function answers_init() {
 		'href' => $CONFIG->wwwroot . "answers/",
 		'text' => elgg_echo("answers:questions")
 	));
-	if (  elgg_get_context() == "answers")
-		elgg_register_menu_item('filter', array(
-					'name' => "answers:add",
-					'href' => $CONFIG->wwwroot . "answers/group",
-					'text' => elgg_echo("answers:group:filter"),
-					'priority' => 500
-		));
+
 	//add_menu(elgg_echo('answers:answers'), $CONFIG->wwwroot . "answers/");
 	elgg_extend_view('css/elgg', 'answers/css');
 	elgg_extend_view('js/elgg', 'answers/js');
@@ -63,6 +57,8 @@ function answers_init() {
 	elgg_register_action("answers/comment/add", $CONFIG->pluginspath . "answers/actions/addcomment.php");
 	elgg_register_action("answers/comment/edit", $CONFIG->pluginspath . "answers/actions/editcomment.php");
 	elgg_register_action("answers/comment/delete", $CONFIG->pluginspath . "answers/actions/deletecomment.php");
+
+	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
 }
 
 /**
@@ -108,6 +104,30 @@ function answers_page_handler($page) {
 	}
 
 	return true;
+}
+
+/**
+ * Add a menu item to an ownerblock
+ * 
+ * @param string $hook
+ * @param string $type
+ * @param array  $return
+ * @param array  $params
+ */
+function answers_owner_block_menu($hook, $type, $return, $params) {
+	if (elgg_instanceof($params['entity'], 'user')) {
+		$url = "answers/owner/{$params['entity']->username}";
+		$item = new ElggMenuItem('answers', elgg_echo('answers'), $url);
+		$return[] = $item;
+	} else {
+		if ($params['entity']->answers_enable != 'no') {
+			$url = "answers/group/{$params['entity']->guid}";
+			$item = new ElggMenuItem('answers', elgg_echo('answers:group'), $url);
+			$return[] = $item;
+		}
+	}
+
+	return $return;
 }
 
 /**
