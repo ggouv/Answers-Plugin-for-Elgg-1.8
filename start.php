@@ -23,7 +23,8 @@ function answers_init() {
 					'priority' => 500
 		));
 	//add_menu(elgg_echo('answers:answers'), $CONFIG->wwwroot . "answers/");
-	elgg_extend_view('css', 'answers/css');
+	elgg_extend_view('css/elgg', 'answers/css');
+	elgg_extend_view('js/elgg', 'answers/js');
 
 	elgg_register_widget_type('answers', elgg_echo('answers'), elgg_echo('answers:widget'));
 
@@ -62,12 +63,6 @@ function answers_init() {
 	elgg_register_action("answers/comment/add", $CONFIG->pluginspath . "answers/actions/addcomment.php");
 	elgg_register_action("answers/comment/edit", $CONFIG->pluginspath . "answers/actions/editcomment.php");
 	elgg_register_action("answers/comment/delete", $CONFIG->pluginspath . "answers/actions/deletecomment.php");
-	
-	elgg_register_css('answer', 'mod/answers/vendor/answers.css');
-	elgg_load_css('answer');
-	
-	elgg_register_js('answers', 'mod/answers/vendor/answers.js');
-	elgg_load_js('answers');
 }
 
 /**

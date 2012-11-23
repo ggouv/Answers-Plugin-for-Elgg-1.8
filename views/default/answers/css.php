@@ -1,10 +1,14 @@
-<?php
-/**
- * Answers CSS extender
- *
- */
-
-?>
+.collapsible_box {
+	background:#dedede;
+	-webkit-border-radius: 8px; 
+	-moz-border-radius: 8px;
+	padding:5px 10px 5px 10px;
+	margin:4px 0 4px 0;
+	display:none;
+}	
+a.collapsibleboxlink {
+	cursor:pointer;
+}
 
 .answers_rating {
 	display: block;
@@ -117,7 +121,7 @@
 .answers_answer_byline {
 	border-top: 1px solid #AAAAAA;
 	color: #666666;
-	font-size: 90%;
+	font-size: 80%;
 	margin: 0;
 }
 
@@ -137,24 +141,56 @@
 }
 
 .topic_post .tags {
-	background: transparent url(<?php echo $vars['url']; ?>_graphics/icon_tag.gif) no-repeat scroll left 2px;
+	background: transparent url(_graphics/icon_tag.gif) no-repeat scroll left 2px;
 	margin: 1px 3px 3px;
 	min-height: 22px;
 	padding: 0 0 0 16px;
 }
 
+.topic_post table td {
+	padding: 6px 0 6px 0;
+}
+
+
 .river_object_question_create, .river_object_question_update {
-	background: url(<?php echo $vars['url']; ?>mod/answers/graphics/river_icon_question.gif) no-repeat left -1px;
+	background: url(mod/answers/graphics/river_icon_question.gif) no-repeat left -1px;
 }
 
 .river_object_question_answer, .river_object_answer_update {
-	background: url(<?php echo $vars['url']; ?>mod/answers/graphics/river_icon_answer.gif) no-repeat left -1px;
+	background: url(mod/answers/graphics/river_icon_answer.gif) no-repeat left -1px;
 }
 
 .river_object_question_choose {
-	background: url(<?php echo $vars['url']; ?>mod/answers/graphics/river_icon_choose.gif) no-repeat left -1px;
+	background: url(mod/answers/graphics/river_icon_choose.gif) no-repeat left -1px;
 }
 
 .river_object_question_comment, .river_object_answer_comment {
-	background: url(<?php echo $vars['url']; ?>mod/answers/graphics/river_icon_comment.gif) no-repeat left -1px;
+	background: url(mod/answers/graphics/river_icon_comment.gif) no-repeat left -1px;
+}
+
+.generic_comment_owner {
+	font-size: 90%;
+	color:#666666;
+}
+.generic_comment {
+	background:#F0F0EE;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	padding:10px;
+	margin:0 10px 10px 10px;
+}
+.generic_comment_icon {
+	float:left;
+}
+.generic_comment_details {
+	margin-left: 60px;
+}
+.generic_comment_details p {
+	margin: 0 0 5px 0;
+}
+.generic_comment_owner {
+	color:#666666;
+	margin: 0px;
+	font-size:90%;
+	border-top: 1px solid #aaaaaa;
 }
