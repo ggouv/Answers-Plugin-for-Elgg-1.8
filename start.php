@@ -51,8 +51,7 @@ function answers_init() {
 	elgg_register_action("answer/delete", $CONFIG->pluginspath . "answers/actions/deleteanswer.php");
 	elgg_register_action("answer/choose", $CONFIG->pluginspath . "answers/actions/chooseanswer.php");
 	elgg_register_action("answer/like", $CONFIG->pluginspath . "answers/actions/like.php");
-	elgg_register_action("answer/dislike", $CONFIG->pluginspath . "answers/actions/like.php");
-	elgg_register_action("answer/unlike", $CONFIG->pluginspath . "answers/actions/like.php");
+	elgg_register_action("answer/dislike", $CONFIG->pluginspath . "answers/actions/dislike.php");
 
 	elgg_register_action("answers/comment/add", $CONFIG->pluginspath . "answers/actions/addcomment.php");
 	elgg_register_action("answers/comment/edit", $CONFIG->pluginspath . "answers/actions/editcomment.php");
@@ -305,6 +304,24 @@ function answers_dislike($answer, $user_guid) {
 function answers_unlike($answer, $user_guid) {
 	answers_clear_like_dislike($answer, $user_guid);
 	return true;
+}
+
+function is_user_likes_answer($answer, $user_guid) {
+	$likes = elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'like', 'annotation_owner_guids' => $user_guid));
+	if (is_array($likes) && count($likes) > 0) {
+		return 'like';
+	}
+
+	return false;
+}
+
+function is_user_dislikes_answer($answer, $user_guid) {
+	$dislikes = elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'dislike', 'annotation_owner_guids' => $user_guid));
+	if (is_array($dislikes) && count($dislikes) > 0) {
+		return 'dislike';
+	}
+
+	return false;
 }
 
 /**

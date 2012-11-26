@@ -1,6 +1,6 @@
 <?php
 /**
- * Answer voting up action
+ * Answer voting down action
  */
 
 // Get input
@@ -16,11 +16,11 @@ if ($answer = get_entity($answer_id)) {
 	}
 
 	// check the actual user opinion
-	if (is_user_likes_answer($answer, $user_guid)) {
+	if (is_user_dislikes_answer($answer, $user_guid)) {
 		$action_result = answers_unlike($answer, $user_guid);
 	}
 	else {
-		$action_result = answers_like($answer, $user_guid);
+		$action_result = answers_dislike($answer, $user_guid);
 	}
 	
 	if ($action_result) {
