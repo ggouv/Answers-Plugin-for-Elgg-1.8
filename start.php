@@ -6,17 +6,19 @@
  * @copyright JHU/APL 2009-2011
  */
 
+elgg_register_event_handler('init', 'system', 'answers_init');
+
 function answers_init() {
 
-	global $CONFIG;
+	// register a library of helper functions
+	$root = dirname(__FILE__);
+	elgg_register_library('answers:utilities', "$root/lib/answers.php");
+	
+	// Add a menu item to the main site menu
+	$item = new ElggMenuItem('answers', elgg_echo('answers:questions'), 'answers/all');
+	elgg_register_menu_item('site', $item);
 
-	elgg_register_menu_item('site', array(
-		'name' => 'answers',
-		'href' => $CONFIG->wwwroot . "answers/",
-		'text' => elgg_echo("answers:questions")
-	));
-
-	//add_menu(elgg_echo('answers:answers'), $CONFIG->wwwroot . "answers/");
+	// Extend css and js
 	elgg_extend_view('css/elgg', 'answers/css');
 	elgg_extend_view('js/elgg', 'answers/js');
 
@@ -34,40 +36,58 @@ function answers_init() {
 	// support group questions/answers
 	elgg_extend_view('groups/tool_latest', 'answers/groupprofile_answers');
 	
-	//elgg_extend_view('object/answer', 'answers/best_answer');
+	//elgg_extend_view('object/answer', 'answers/best_answer'); @todo ? a voir
 	
 	add_group_tool_option('answers', elgg_echo('groups:enableanswers'), true);
 
 	// register questions and answers for search
-	//elgg_register_event_handler('object', 'question');
-	//elgg_register_event_handler('object', 'answer');
+	elgg_register_event_handler('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
+	elgg_register_event_handler('object', 'answer');
+	
+	// register actions. Les actions sont dans le dossier actions/answers. C'est mieux si on veut les overrider.
+	$action_path = "$root/actions/answers";
+	elgg_register_action("answers/question", "$action_path/addquestion.php");
+	elgg_register_action("question/edit", "$action_path/editquestion.php");
+	elgg_register_action("question/delete", "$action_path/deletequestion.php");
 
-	elgg_register_action("question/add", $CONFIG->pluginspath . "answers/actions/addquestion.php");
-	elgg_register_action("question/edit", $CONFIG->pluginspath . "answers/actions/editquestion.php");
-	elgg_register_action("question/delete", $CONFIG->pluginspath . "answers/actions/deletequestion.php");
+	elgg_register_action("answer/add", "$action_path/addanswer.php");
+	elgg_register_action("answer/edit", "$action_path/editanswer.php");
+	elgg_register_action("answer/delete", "$action_path/deleteanswer.php");
+	elgg_register_action("answer/choose", "$action_path/chooseanswer.php");
+	elgg_register_action("answer/like", "$action_path/like.php");
+	elgg_register_action("answer/dislike", "$action_path/dislike.php");
 
-	elgg_register_action("answer/add", $CONFIG->pluginspath . "answers/actions/addanswer.php");
-	elgg_register_action("answer/edit", $CONFIG->pluginspath . "answers/actions/editanswer.php");
-	elgg_register_action("answer/delete", $CONFIG->pluginspath . "answers/actions/deleteanswer.php");
-	elgg_register_action("answer/choose", $CONFIG->pluginspath . "answers/actions/chooseanswer.php");
-	elgg_register_action("answer/like", $CONFIG->pluginspath . "answers/actions/like.php");
-	elgg_register_action("answer/dislike", $CONFIG->pluginspath . "answers/actions/dislike.php");
-
-	elgg_register_action("answers/comment/add", $CONFIG->pluginspath . "answers/actions/addcomment.php");
-	elgg_register_action("answers/comment/edit", $CONFIG->pluginspath . "answers/actions/editcomment.php");
-	elgg_register_action("answers/comment/delete", $CONFIG->pluginspath . "answers/actions/deletecomment.php");
+	elgg_register_action("answers/comment/add", "$action_path/addcomment.php");
+	elgg_register_action("answers/comment/edit", "$action_path/editcomment.php");
+	elgg_register_action("answers/comment/delete", "$action_path/deletecomment.php");
 
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
 }
 
 /**
- * Page handler for answers plugin
+* Dispatcher for answers.
  *
+ * URLs take the form of
+ *  All questions:         answers/all
+ *  User's questions:      answers/owner/<username>
+ *  Friends' questions:    answers/friends/<username>
+ *  View questions:        answers/view/<guid>/<title>
+ *  New questions:         answers/add/<guid> (container: user, group, parent)
+ *  Edit questions:        answers/edit/<guid>
+ *  Group questions:       answers/group/<guid>/all
+ *
+ * Title is ignored
  * @param array $page From the page_handler function
  * @return true|false Depending on success
  */
 function answers_page_handler($page) {
 
+	elgg_load_library('answers:utilities');
+	
+	if (!isset($page[0])) {
+		$page[0] = 'all';
+	}
+	
 	elgg_push_breadcrumb(elgg_echo('answers'), 'answers/all');
 
 	$pages = dirname(__FILE__) . '/pages/answers';
@@ -78,20 +98,18 @@ function answers_page_handler($page) {
 			set_input('question_id', $page[1]);
 			include "$pages/view.php";
 			break;
-		case "owner":
-			set_input('username', $page[1]);
+		case "owner": // pas besoin des set_input('username', $page[1]); pour avoir le propriétaire puisqu'on a elgg_get_page_owner_entity(); dans les pages.
 			include	"$pages/owner.php";
 			break;
 		case "friends":
-			set_input('username', $page[1]);
 			include	"$pages/friends.php";
 			break;
-		case "ask":
-			set_input('username', $page[1]);
+		case "add": // et edit ?
+			gatekeeper();
 			include	"$pages/add.php";
 			break;
 		case "group":
-			set_input('username', $page[1]);
+			group_gatekeeper();
 			include	"$pages/owner.php";
 			break;
 		case "all":
@@ -100,6 +118,7 @@ function answers_page_handler($page) {
 			break;
 		default:
 			return false;
+			break;
 	}
 
 	return true;
@@ -129,81 +148,7 @@ function answers_owner_block_menu($hook, $type, $return, $params) {
 	return $return;
 }
 
-/**
- * Setup sidebar menus
- */
-function answers_pagesetup() {
 
-	global $CONFIG;
-
-	$page_owner = elgg_get_page_owner_entity();
-	
-
-	// Group submenu option
-	if ($page_owner instanceof ElggGroup && elgg_get_context() == "groups") {
-		if ($page_owner->answers_enable != "no") {
-			//add_submenu_item(sprintf(elgg_echo("answers:group"), $page_owner->name), $CONFIG->wwwroot . "answers/owner/" . $page_owner->username);#
-			elgg_register_menu_item('title', array(
-				'name' => "answers:add",
-				'href' => $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/",
-				'text' => elgg_echo("answers:add"),
-				'link_class' => 'elgg-button elgg-button-action',
-			));
-		}
-	}
-
-	if (elgg_get_context() == "answers") {
-		if ((elgg_get_page_owner_guid() == elgg_get_logged_in_user_guid() || !elgg_get_page_owner_guid()) && elgg_is_logged_in()) {
-			//add_submenu_item(elgg_echo('answers:your'), $CONFIG->wwwroot . "answers/owner/" . elgg_get_logged_in_user_entity()->username . '/');
-			elgg_register_menu_item('title', array(
-				'name' => "answers:add",
-				'href' => $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/",
-				'text' => elgg_echo("answers:add"),
-				'link_class' => 'elgg-button elgg-button-action',
-			));
-			//add_submenu_item(elgg_echo('answers:friends'), $CONFIG->wwwroot . "answers/friends/" . elgg_get_logged_in_user_entity()->username . "/");
-		} else if (elgg_get_page_owner_guid()) {
-			//add_submenu_item(sprintf(elgg_echo('answers:user'), $page_owner->name), $CONFIG->wwwroot . "answers/owner/" . $page_owner->username . '/');
-			elgg_register_menu_item('title', array(
-				'name' => "answers:add",
-				'href' => $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/",
-				'text' => elgg_echo("answers:add"),
-				'link_class' => 'elgg-button elgg-button-action',
-			));
-			if ($page_owner instanceof ElggUser) {
-				//add_submenu_item(sprintf(elgg_echo('answers:user:friends'), $page_owner->name), $CONFIG->wwwroot . "answers/friends/" . $page_owner->username . "/");
-				elgg_register_menu_item('page', array(
-					'name' => 'answers:friends',
-					'href' => $CONFIG->wwwroot . "answers/friends/" . $page_owner->username . "/",
-					'text' => sprintf(elgg_echo('answers:user:friends'), $page_owner->name),
-					'priority' => 200
-				));
-			}
-		}
-		
-			
-		//add_submenu_item(elgg_echo('answers:everyone'), $CONFIG->wwwroot . "answers/world/");
-
-		if ($page_owner instanceof ElggGroup && can_write_to_container(elgg_get_logged_in_user_guid(), elgg_get_page_owner_guid())) {
-			//add_submenu_item(sprintf(elgg_echo('answers:question:groupadd'), $page_owner->name), $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/");
-			elgg_register_menu_item('title', array(
-				'name' => "answers:add",
-				'href' => $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/",
-				'text' => elgg_echo("answers:add"),
-				'link_class' => 'elgg-button elgg-button-action',
-			));
-		} else if (!($page_owner instanceof ElggGroup) && elgg_is_logged_in()) {
-			//add_submenu_item(elgg_echo('answers:question:add'), $CONFIG->wwwroot . "answers/ask/" . elgg_get_logged_in_user_entity()->username . "/");
-			elgg_register_menu_item('title', array(
-				'name' => "answers:add",
-				'href' => $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/",
-				'text' => elgg_echo("answers:add"),
-				'link_class' => 'elgg-button elgg-button-action',
-			));
-		}
-		
-	}
-}
 
 /**
  * Override the answer object URL
@@ -227,11 +172,9 @@ function answer_url($answer) {
  * @return string
  */
 function question_url($question) {
-
-	global $CONFIG;
 	$title = $question->title;
 	$title = elgg_get_friendly_title($title);
-	return $CONFIG->url . "answers/view/" . $question->getGUID() . "/" . $title;
+	return elgg_get_site_url() . "answers/view/" . $question->getGUID() . "/" . $title;
 }
 
 /**
@@ -499,5 +442,3 @@ function answers_can_edit_comment($comment) {
 	return ($comment->owner_guid == $_SESSION["guid"] || elgg_is_admin_logged_in());
 }
 
-elgg_register_event_handler('init', 'system', 'answers_init');
-//elgg_register_event_handler('pagesetup', 'system', 'answers_pagesetup');

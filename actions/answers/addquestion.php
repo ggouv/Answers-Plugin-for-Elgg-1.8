@@ -4,18 +4,19 @@
  */
 
 // Get input data
-$title = get_input('questiontitle');
-$body = get_input('questiondetails');
-$tags = get_input('questiontags');
-//$access = get_input('access_id');
-$user = $_SESSION['user']->getGUID();
-$container_guid = (int) get_input('container_guid', 0);
+$title = get_input('title');
+$description = get_input('description');
+$tags = get_input('tags');
+$access = get_input('access_id');
+$container_guid = (int) get_input('container_guid', elgg_get_page_owner_guid());
 
-// Convert string of tags into a preformatted array
-$tagarray = string_to_tag_array($tags);
+$user = elgg_get_logged_in_user_entity();
+
+elgg_make_sticky_form('answers');
+
 
 // Make sure the title / description aren't blank
-if (empty($title)) {
+if (empty($title) || empty($description)) {
 	register_error(elgg_echo("answers:question:blank"));
 	forward("mod/answers/add.php");
 
@@ -27,7 +28,8 @@ if (empty($title)) {
 	//$question->access_id = $access;
 	$question->access_id = ACCESS_PUBLIC;
 	$question->title = $title;
-	$question->description = $body;
+	$question->description = $description;
+	$question->tags = string_to_tag_array($tags);
 
 	// check if user can add question to group
 	if ($container_guid && $container_guid != $_SESSION['guid']) {
@@ -48,10 +50,6 @@ if (empty($title)) {
 	if (!$question->save()) {
 		register_error(elgg_echo("answers:question:saveerror"));
 		forward("mod/answers/add.php");
-	}
-
-	if (is_array($tagarray)) {
-		$question->tags = $tagarray;
 	}
 
 	// Success message
