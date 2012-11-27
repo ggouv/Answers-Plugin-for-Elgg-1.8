@@ -6,12 +6,6 @@
 if ($vars['entity']->answers_enable != 'no') {
 	global $CONFIG;
 	$page_owner = elgg_get_logged_in_user_entity();
-	elgg_register_menu_item('title', array(
-		'name' => "answers:add",
-		'href' => $CONFIG->wwwroot . "answers/ask/group:" . $vars['entity']->guid . "/",
-		'text' => elgg_echo("answers:add"),
-		'link_class' => 'elgg-button elgg-button-action',
-	));
 ?>
 
 	<div id="answers_widget_layout">
