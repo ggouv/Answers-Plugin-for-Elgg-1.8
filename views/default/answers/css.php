@@ -1,3 +1,56 @@
+.question-left-column {
+	float: left;
+	position: relative;
+}
+.question-content {
+	margin-left: 60px;
+}
+.question-content .question-post {
+	border-bottom: 1px dotted #CCC;
+	padding-bottom: 20px;
+}
+.question-content .elgg-annotation-list .elgg-item {
+	opacity: 0.75;
+}
+.question-content .elgg-annotation-list .elgg-item:hover {
+	opacity: 1;
+	background-color: #FCFCFC;
+}
+.question-content > a {
+	padding: 2px 10px 3px;
+	color: #555;
+}
+.question-content > a.elgg-state-active {
+	background-color: #DEDEDE;
+	color: #333;
+	display: block;
+	float: left;
+	font-size: 110%;
+	font-weight: bold;
+	margin: 10px 0 -1px;
+}
+.question-content > a.elgg-state-active:hover {
+	text-decoration: none;
+}
+#comment-question {
+	clear: both;
+}
+.question-content .elgg-form-comments-add label {
+	display: none;
+}
+.question-answers > h3 {
+	float: left;
+	position: absolute;
+}
+.question-answers .elgg-menu-filter li {
+	float: right;
+}
+.question-answers .elgg-menu-filter li:first-child {
+	margin-right: 10px;
+}
+
+
+
 .collapsible_box {
 	background:#dedede;
 	-webkit-border-radius: 8px; 

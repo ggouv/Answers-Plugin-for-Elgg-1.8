@@ -5,25 +5,27 @@
 
 gatekeeper();
 
+$question_guid = get_input('question_guid');
+$question = get_entity($question_guid);
+
+if (!elgg_instanceof($question, 'object', 'question') || !$question->canEdit()) {
+	register_error(elgg_echo('answers:unknown_question'));
+	forward(REFERRER);
+}
+
 // Get the current page's owner
 $page_owner = elgg_get_page_owner_entity();
-if ($page_owner === false || is_null($page_owner)) {
-	elgg_set_page_owner_guid($_SESSION['guid']);
-}
 
-// Get the question if it exists
-$question_id = (int) get_input('question_id');
-if ($question = get_entity($question_id)) {
+$title = elgg_echo('answers:question:edit');
+elgg_push_breadcrumb($title);
 
-	if ($question->canEdit()) {
-		$area2 .= elgg_view("answers/forms/question", array('entity' => $question));
-	}
-}
+$vars = answers_prepare_form_vars($question);
+$content = elgg_view_form('answers/question', array(), $vars);
 
-//$body = elgg_view_layout('two_column_left_sidebar', '', $area2);
+$body = elgg_view_layout('content', array(
+	'filter' => '',
+	'content' => $content,
+	'title' => $title
+));
 
-$body = elgg_view_layout("content", array('content' => $area2, 'title' => elgg_echo('answers:question:edit')));
-
-echo elgg_view_page(elgg_echo('answers:everyone'), $body);
-
-//page_draw(elgg_echo('answers:question:edit'), $body);
+echo elgg_view_page($title, $body);

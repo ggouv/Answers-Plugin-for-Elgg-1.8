@@ -41,8 +41,8 @@ function answers_init() {
 	add_group_tool_option('answers', elgg_echo('groups:enableanswers'), true);
 
 	// register questions and answers for search
-	elgg_register_event_handler('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
-	elgg_register_event_handler('object', 'answer');
+	///elgg_register_event_handler('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
+	//elgg_register_event_handler('object', 'answer');
 	
 	// register actions. Les actions sont dans le dossier actions/answers. C'est mieux si on veut les overrider.
 	$action_path = "$root/actions/answers";
@@ -50,7 +50,7 @@ function answers_init() {
 	elgg_register_action("question/edit", "$action_path/editquestion.php");
 	elgg_register_action("question/delete", "$action_path/deletequestion.php");
 
-	elgg_register_action("answer/add", "$action_path/addanswer.php");
+	elgg_register_action("answers/addanswer", "$action_path/addanswer.php");
 	elgg_register_action("answer/edit", "$action_path/editanswer.php");
 	elgg_register_action("answer/delete", "$action_path/deleteanswer.php");
 	elgg_register_action("answer/choose", "$action_path/chooseanswer.php");
@@ -98,15 +98,20 @@ function answers_page_handler($page) {
 			set_input('question_id', $page[1]);
 			include "$pages/view.php";
 			break;
-		case "owner": // pas besoin des set_input('username', $page[1]); pour avoir le propriétaire puisqu'on a elgg_get_page_owner_entity(); dans les pages.
+		case "owner":
 			include	"$pages/owner.php";
 			break;
 		case "friends":
 			include	"$pages/friends.php";
 			break;
-		case "add": // et edit ?
+		case "add":
 			gatekeeper();
 			include	"$pages/add.php";
+			break;
+		case "edit":
+			set_input('question_guid', $page[1]);
+			gatekeeper();
+			include	"$pages/edit.php";
 			break;
 		case "group":
 			group_gatekeeper();
