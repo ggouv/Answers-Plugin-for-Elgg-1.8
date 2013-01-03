@@ -14,15 +14,7 @@ $area2 = elgg_list_entities(array(
 ));
 $containerEntity = get_entity($page_owner->container_guid );
 
-//elgg_register_title_button();
-elgg_register_menu_item('title', array(
-	'name' => "answers:add",
-	'href' => $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/",
-	'text' => elgg_echo("answers:add"),
-	'link_class' => 'elgg-button elgg-button-action',
-));
-//$body = elgg_view_layout("two_column_left_sidebar", '', $area2);
+elgg_register_title_button();
 $body = elgg_view_layout("content", array('content' => $area2, 'title' => elgg_echo('answers:everyone')));
 
 echo elgg_view_page(elgg_echo('answers:everyone'), $body);
-//page_draw(elgg_echo('answers:everyone'), $body);
