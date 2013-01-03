@@ -56,10 +56,6 @@ function answers_init() {
 	elgg_register_action("answer/like", "$action_path/like.php");
 	elgg_register_action("answer/dislike", "$action_path/dislike.php");
 
-	elgg_register_action("answers/comment/add", "$action_path/addcomment.php");
-	elgg_register_action("answers/comment/edit", "$action_path/editcomment.php");
-	elgg_register_action("answers/comment/delete", "$action_path/deletecomment.php");
-
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
 }
 
