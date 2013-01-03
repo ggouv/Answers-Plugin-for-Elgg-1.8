@@ -95,6 +95,7 @@ $english = array(
 	/**
 	 * Error messages
 	 */
+	'answers:question:blank' => "The question cannot be blank",
 	'answers:answer:blank' => "Sorry; your answer must not be blank.",
 	'answers:error' => 'Something went wrong. Please try again.',
 	'answers:save:failure' => "Your answers post could not be saved. Please try again.",

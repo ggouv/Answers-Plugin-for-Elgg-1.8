@@ -47,7 +47,6 @@ function answers_init() {
 	// register actions. Les actions sont dans le dossier actions/answers. C'est mieux si on veut les overrider.
 	$action_path = "$root/actions/answers";
 	elgg_register_action("answers/question/save", "$action_path/question/save.php");
-	elgg_register_action("question/edit", "$action_path/editquestion.php");
 	elgg_register_action("question/delete", "$action_path/deletequestion.php");
 
 	elgg_register_action("answers/addanswer", "$action_path/addanswer.php");
