@@ -49,7 +49,7 @@ function answers_init() {
 	elgg_register_action("answers/question/save", "$action_path/question/save.php");
 	elgg_register_action("question/delete", "$action_path/deletequestion.php");
 
-	elgg_register_action("answers/addanswer", "$action_path/addanswer.php");
+	elgg_register_action("answers/answer/save", "$action_path/answer/save.php");
 	elgg_register_action("answer/edit", "$action_path/editanswer.php");
 	elgg_register_action("answer/delete", "$action_path/deleteanswer.php");
 	elgg_register_action("answer/choose", "$action_path/chooseanswer.php");
