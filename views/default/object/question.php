@@ -26,20 +26,15 @@ $owner_link = elgg_view('output/url', array(
 $author_text = elgg_echo('byline', array($owner_link));
 $date = elgg_view_friendly_time($question->time_created);
 
-// The "on" status changes for comments, so best to check for !Off
-if ($question->comments_on != 'Off') {
-	$comments_count = $question->countComments();
-	//only display if there are commments
-	if ($comments_count != 0) {
-		$text = elgg_echo("comments") . " ($comments_count)";
-		$comments_link = elgg_view('output/url', array(
-			'href' => $question->getURL() . '#comments',
-			'text' => $text,
-			'is_trusted' => true,
-		));
-	} else {
-		$comments_link = '';
-	}
+$comments_count = $question->countComments();
+//only display if there are commments
+if ($comments_count != 0) {
+	$text = elgg_echo("comments") . " ($comments_count)";
+	$comments_link = elgg_view('output/url', array(
+		'href' => $question->getURL() . '#comments',
+		'text' => $text,
+		'is_trusted' => true,
+	));
 } else {
 	$comments_link = '';
 }
