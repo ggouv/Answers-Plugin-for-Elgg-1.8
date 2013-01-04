@@ -62,7 +62,8 @@ if ($question instanceof ElggEntity && $question->getSubtype() == "question") {
 		'title' => $answers_title
 	));
 	$content .= $chosen . $others;
-	$content .= elgg_view_form('answers/addanswer', array(), array('entity' => $question)) . '</div>';
+	$content .= elgg_view_form('answers/answer/save', array(), array('entity' => $question));
+	$content .= '</div>';
 
 
 	// Display through the correct canvas area

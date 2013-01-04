@@ -9,7 +9,7 @@ $english = array(
 	 * Menu items and titles
 	 */
 	'answers' => "Questions",
-	'answers:add' => "New question",
+	'answers:add' => "Add question",
 	'answers:question' => "Question",
 	'answers:questions' => "Questions",
 	'answers:answers' => "Answers",
@@ -17,10 +17,10 @@ $english = array(
 	'answers:answers:best' => "Best Answer",
 	'answers:answers:other_answers' => 'Other Answers',
 	'answers:answer' => "Answer",
-	'answers:user' => "%s's questions",
+	'answers:owner' => "%s's questions",
 	'answers:user:friends' => "%s's following questions",
 	'answers:your' => "Your questions",
-	'answers:group' => "Group answers",
+	'answers:group' => "Group questions",
 	'answers:group:filter' => "Groups",
 	'answers:group:title' => "Groupquestions",
 	'answers:group:pretitle' => "Groupquestion: ",
@@ -43,10 +43,9 @@ $english = array(
 	'answers:answer:mustbeingroup' => "You must be a member of %s to answer or comment on this question.",
 	'answers:questions:more' => "More questions",
 	'answers:questions:none' => "There are no questions here.",
-	'groups:enableanswers' => "Enable group answers",
+	'groups:enableanswers' => "Enable group questions",
 	'answers:group:questions:none' => "This group does not have any questions yet",
 	'answers:question:tooltip:edit' => "Edit question",
-	'answers:question:tooltip:delete' => "Delete question",
 	'answers:answer:tooltip:delete' => "Delete answer",
 	'answers:answer:tooltip:like' => "'like' this answer",
 	'answers:answer:tooltip:dislike' => "'dislike' this answer",
@@ -80,32 +79,28 @@ $english = array(
 	 */	
 	'answers:question:posted' => "Your question was successfully posted.",
 	'answers:question:updated' => "Your question was successfully updated.",
-	'answers:question:deleted' => "Your question was successfully deleted.",
 	'answers:answer:posted' => "Your answer was successfully posted.",
 	'answers:answer:updated' => "Your answer was successfully updated.",
-	'answers:answer:deleted' => "Your answer was successfully deleted.",
+	'answers:deleted' => "Deletion was successful.",
 	'answers:liked' => "You 'liked' an answer.",
 	'answers:disliked' => "You 'disliked' an answer.",
 	'answers:unliked' => "You 'unliked' an answer.",
 	'answers:answer:chosen' => "Your favorite answer was successfully chosen.",
-	'answers:comment:posted' => "Your comment was successfully posted.",
-	'answers:comment:updated' => "Your comment was successfully updated.",
-	'answers:comment:deleted' => "Your comment was successfully deleted.",
 
 	/**
 	 * Error messages
 	 */
+	'answers:question:blank' => "The question cannot be blank",
 	'answers:answer:blank' => "Sorry; your answer must not be blank.",
 	'answers:error' => 'Something went wrong. Please try again.',
 	'answers:save:failure' => "Your answers post could not be saved. Please try again.",
 	'answers:failure' => "Your answer could not be saved. Please try again.",
 	'answers:blank' => "Sorry; your question title can't be blank.",
 	'answers:notfound' => "Sorry; we could not find the specified question.",
-	'answers:question:notdeleted' => "Sorry; we could not delete this question.",
+	'answers:notdeleted' => "Sorry; deletion failed.",
 	'answers:liked:failure' => "Sorry; we failed to save your 'like'.",
 	'answers:disliked:failure' => "Sorry; we failed to save your 'dislike'.",
 	'answers:unliked:failure' => "Sorry; we failed to save your 'unlike'.",
-	'answers:comment:blank' => "Sorry; your comment must not be blank.",
 	
 	/**
 	 * Email Notifications

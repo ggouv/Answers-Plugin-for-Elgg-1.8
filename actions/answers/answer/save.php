@@ -4,7 +4,7 @@
  */
 
 // Get input
-$question_id = (int) get_input('question_id');
+$question_id = (int) get_input('question_guid');
 $answer_text = get_input('answer_text');
 $user = $_SESSION['user']->getGUID();
 

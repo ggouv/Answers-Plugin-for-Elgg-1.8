@@ -19,7 +19,7 @@ $content = elgg_list_entities(array(
 	'container_guid' => $page_owner->guid,
 	'full_view' => false,
 	'pagination' => true,
-	));
+));
 
 if (!$content) {
 	$content = elgg_echo('answers:none');

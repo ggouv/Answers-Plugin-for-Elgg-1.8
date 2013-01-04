@@ -2,7 +2,6 @@
 /**
  * Add question form
  */
-global $fb; $fb->info('épép');
 
 $title = elgg_extract('title', $vars, '');
 $desc = elgg_extract('description', $vars, '');

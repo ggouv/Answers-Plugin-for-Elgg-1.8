@@ -20,7 +20,7 @@ $title = elgg_echo('answers:question:edit');
 elgg_push_breadcrumb($title);
 
 $vars = answers_prepare_form_vars($question);
-$content = elgg_view_form('answers/question', array(), $vars);
+$content = elgg_view_form('answers/question/save', array(), $vars);
 
 $body = elgg_view_layout('content', array(
 	'filter' => '',

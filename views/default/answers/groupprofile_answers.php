@@ -3,61 +3,43 @@
  * Group "widget" for answers
  */
 
-if ($vars['entity']->answers_enable != 'no') {
-	global $CONFIG;
-	$page_owner = elgg_get_logged_in_user_entity();
-?>
+$group = elgg_get_page_owner_entity();
 
-	<div id="answers_widget_layout">
-		<h2>
-			<a href="<?php echo $CONFIG->wwwroot . "answers/owner/group:" . $vars['entity']->guid; ?>">
-				<?php echo elgg_echo("answers:group"); ?>
-			</a>
-		</h2>
+if ($group->answers_enable == "no") {
+	return true;
+}
 
-<?php
-	$number = (int) $vars['entity']->num_display;
-	if (!$number) {
-		$number = 2;
-	}
+$all_link = elgg_view('output/url', array(
+	'href' => "answers/group/$group->guid/all",
+	'text' => elgg_echo('link:view:all'),
+	'is_trusted' => true,
+));
 
-	//get the groups questions
-	$options = array(
-		'type' => 'object',
-		'subtype' => 'question',
-		'container_guid' => $vars['entity']->guid,
-		'limit' => $number,
-	);
-	$questions = elgg_get_entities($options);
-	$options['count'] = true;
-	$count = elgg_get_entities($options);
-	if ($questions) {
+elgg_push_context('widgets');
+$options = array(
+	'type' => 'object',
+	'subtype' => 'question',
+	'container_guid' => elgg_get_page_owner_guid(),
+	'limit' => 6,
+	'full_view' => false,
+	'pagination' => false,
+);
+$content = elgg_list_entities($options);
+elgg_pop_context();
 
-		//display in list mode
-		foreach ($questions as $question) {
-			echo elgg_view_entity($question);
-		}
+if (!$content) {
+	$content = '<p>' . elgg_echo('answers:group:questions:none') . '</p>';
+}
 
-		if ($count > $number) {
-			//get a link to the groups questions
-			$more_questions_url = $vars['url'] . "answers/owner/" . elgg_get_page_owner_entity()->username;
-			echo "<div class=\"forum_latest\"><a href=\"{$more_questions_url}\">" . elgg_echo('answers:questions:more') . "</a></div>";
-		}
-	} else {
+$new_link = elgg_view('output/url', array(
+	'href' => "answers/add/$group->guid",
+	'text' => elgg_echo('answers:add'),
+	'is_trusted' => true,
+));
 
-		// no questions so show link to ask a question if member of the group
-		echo "<div class=\"forum_latest\">" . elgg_echo("answers:group:questions:none");
-		echo "</div>";
-	}
-
-	if (false && $vars['entity']->isMember()) {
-		echo '<div class="group_widget_menu">';
-		echo "<a href=\"" . $CONFIG->wwwroot . "answers/ask/" . page_owner_entity()->username . "/\">" . elgg_echo('answers:question:add') . "</a>";
-		echo '</div>';
-	}
-?>
-	<div class="clearfloat"></div>
-</div>
-
-<?php
-}//end of activate check statement
+echo elgg_view('groups/profile/module', array(
+	'title' => elgg_echo('answers:group'),
+	'content' => $content,
+	'all_link' => $all_link,
+	'add_link' => $new_link,
+));

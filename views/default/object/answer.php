@@ -47,7 +47,7 @@ if (isset($vars['entity'])) {
 					<div class="answers_answer_delete">
 			<?php
 					echo elgg_view("output/confirmlink", array(
-						'href' => $vars['url'] . "action/answer/delete?answer_id=" . $answer->getGUID(),
+						'href' => "action/answers/delete?guid=" . $answer->getGUID(),
 						'text' => elgg_echo('delete'),
 						'confirm' => elgg_echo('deleteconfirm'),
 						'is_action' => true,

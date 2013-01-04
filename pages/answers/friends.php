@@ -18,12 +18,7 @@ if ($page_owner == $_SESSION['user']) {
 } else {
 	$title = sprintf(elgg_echo('answers:user:friends'), $page_owner->name);
 }
-elgg_register_menu_item('title', array(
-	'name' => "answers:add",
-	'href' => $CONFIG->wwwroot . "answers/ask/" . $page_owner->username . "/",
-	'text' => elgg_echo("answers:add"),
-	'link_class' => 'elgg-button elgg-button-action',
-));
+elgg_register_title_button();
 // get the user's friends' questions
 $area2 .= list_user_friends_objects($page_owner->getGUID(), 'question', 10, false);
 
