@@ -3,55 +3,32 @@ elgg.provide('elgg.answers');
 
 elgg.answers.init = function() {
 
-	// ajaxified action for vote up
-	$('.answers_like').live('click', function() {
-		if ($.data(this, 'clicked') || $(this).hasClass('checked')) { // Prevent double-click
-			return false;
-		} else {
-			$.data(this, 'clicked', true);
-			elgg.action('answer/like', {
-				data: {
-					answer_id: $('answer_id').val()
-				},
-				success: function(json) {
+	// ajaxified action for vote
+	$('.answer_like, .answer_dislike').live('click', function(e) {
+		var answer = $(this).parents('.elgg-item-answer'),
+			action = $(this).hasClass('answer_like') ? 'like' : 'dislike';
 
-					if ($('.answers_like').hasClass('answers_like_selected')) {
-						$('.answers_like').removeClass('answers_like_selected');
-						$('.answers_rating').val($('.answers_rating').val() - 1);
-					}
-					else {
-						$('.answers_like').addClass('answers_like_selected');
-						$('.answers_rating').val($('.answers_rating').val() + 1);
-					}
-					
-					$.data(thisVote, 'clicked', false);
+		elgg.action('answer/'+action, {
+			data: {
+				answer_id: answer.attr('id').replace(/elgg-object-/, '')
+			},
+			success: function(json) {
+			// perform action. Put in standby to merge cash pull request
+/*
+				if ($('.answers_like').hasClass('answers_like_selected')) {
+					$('.answers_like').removeClass('answers_like_selected');
+					$('.answers_rating').val($('.answers_rating').val() - 1);
 				}
-			});
-		}
-	});
-
-	// ajaxified action for vote down
-	$('.answers_dislike').live('click', function() {
-		if ($.data(this, 'clicked') || $(this).hasClass('checked')) { // Prevent double-click
-			return false;
-		} else {
-			$.data(this, 'clicked', true);
-			elgg.action('answer/dislike', {
-				data: {
-					answer_id: $('answer_id').val()
-				},
-				success: function(json) {
-					if ($('.answers_dislike').hasClass('answers_dislike_selected')) {
-						$('.answers_dislike').removeClass('answers_dislike_selected');
-						$('.answers_rating').val($('.answers_rating').val() + 1);
-					} else {
-						$('.answers_dislike').addClass('answers_dislike_selected');
-						$('.answers_rating').val($('.answers_rating').val() - 1);
-					}
-					$.data(thisVote, 'clicked', false);
+				else {
+					$('.answers_like').addClass('answers_like_selected');
+					$('.answers_rating').val($('.answers_rating').val() + 1);
 				}
-			});
-		}
+				
+				*/
+			}
+		});
+		e.preventDefault();
+		return false;
 	});
 }
 elgg.register_hook_handler('init', 'system', elgg.answers.init);

@@ -16,9 +16,8 @@ if ($question && $answer) {
 		system_message(elgg_echo("answers:answer:chosen"));
 		//add to river
 		add_to_river('river/object/question/choose', 'choose', $question->getGUID(), $answer->getGUID());
-		//add_to_river('river/object/question/choose', 'choose', $_SESSION['user']->guid, $question->getGUID());
 	} else {
-		error_log("couldn't edit: " . $question->getSubtype() . ", " . $question->canEdit() . ", " . $answer->getGUID());
+		register_error(elgg_echo("answers:answer:cannotchoose"));
 	}
 } else {
 	register_error(elgg_echo("answers:notfound"));

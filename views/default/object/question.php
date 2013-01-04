@@ -79,11 +79,11 @@ if ($full) {
 	$question_comments = elgg_list_annotations(array(
 		'guid' => $question->getGUID(),
 		'annotation_name' => 'generic_comment',
-		'full_view' => 'tiny',
+		'full_view' => 'tiny'
 	));
 
 	if (elgg_is_logged_in()) {
-		$question_add_comment = '<a rel="toggle" href="#comment-question" class="t">' . elgg_echo("generic_comments:add") . '</a>';
+		$question_add_comment = '<a rel="toggle" href="#comment-question" class="t mll add-comment">' . elgg_echo("generic_comments:add") . '</a>';
 		$question_add_comment .= '<div id="comment-question" class="hidden">' . elgg_view_form('comments/add', '', $vars) . '</div>';
 	}
 		
@@ -93,8 +93,10 @@ if ($full) {
 	<div class="question-content mbl">
 		$question_info
 		$body
-		$question_comments
-		$question_add_comment
+		<div id="comments">
+			$question_comments
+			$question_add_comment
+		</div>
 	</div>
 </div>
 HTML;

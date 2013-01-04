@@ -62,7 +62,7 @@ if ($question instanceof ElggEntity && $question->getSubtype() == "question") {
 		'title' => $answers_title
 	));
 	$content .= $chosen . $others;
-	$content .= elgg_view_form('answers/addanswer', array(), array('entity' => $question)) . '</div>';
+	$content .= elgg_view_form('answers/addanswer', array('class' => 'mtl'), array('entity' => $question)) . '</div>';
 
 
 	// Display through the correct canvas area
@@ -70,6 +70,7 @@ if ($question instanceof ElggEntity && $question->getSubtype() == "question") {
 		'content' => $content,
 		'title' => $title,
 		'filter_override' => '',
+		'class' => 'question-view'
 	));
 
 	// If we're not allowed to see the question
