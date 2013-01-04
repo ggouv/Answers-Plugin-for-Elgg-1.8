@@ -1,95 +1,118 @@
 <?php
-if (isset($vars['entity'])) {
-	$answer = $vars['entity'];
-	$question = get_question_for_answer($answer);
+/**
+ * View for answer object
+ *
+ * @package Questions
+ */
 
-	$owner = $answer->getOwnerEntity();
-	$canedit = $answer->canEdit();
+$full = elgg_extract('full_view', $vars, FALSE);
+$answer = elgg_extract('entity', $vars, FALSE);
 
-	$chosen_answer = ($question->chosen_answer == $answer->getGUID());
-	$full = isset($vars['full']) && $vars['full'] == true;
-?>
+if (!$answer) {
+	return TRUE;
+}
 
-<?php if ($chosen_answer) { ?>
-		<div class="answers_header answers_chosen_heading"><?php echo elgg_echo('answers:answers:best');?></div>
-<?php } ?>
-	<a name="<?php echo $answer->getGUID(); ?>"></a>
-	<div class="generic_comment<?php echo $chosen_answer ? " answers_chosen" : ""; ?>">
+$answer_guid = $answer->getGUID();
+$owner = $answer->getOwnerEntity();
+$container = $answer->getContainerEntity();
 
-<?php if ($full) { ?>
-			<div class="answers_rating_container">
-<?php echo elgg_view("answers/rating_block", $vars); ?>
-			</div>
-<?php } ?>
-	<div class="generic_comment_details">
+$owner_icon = elgg_view_entity_icon($owner, 'tiny');
+$owner_link = elgg_view('output/url', array(
+	'href' => "answers/owner/$owner->username",
+	'text' => $owner->name,
+	'is_trusted' => true,
+));
+$author_text = elgg_echo('byline', array($owner_link));
+$date = elgg_view_friendly_time($answer->time_created);
 
-		<!-- output the actual comment -->
-<?php echo elgg_view("output/longtext", array("value" => $answer->description)); ?>
+// The "on" status changes for comments, so best to check for !Off
+if ($answer->comments_on != 'Off') {
+	$comments_count = $answer->countComments();
+	//only display if there are commments
+	if ($comments_count != 0) {
+		$text = elgg_echo("comments") . " ($comments_count)";
+		$comments_link = elgg_view('output/url', array(
+			'href' => "#answer-comment-$answer_guid",
+			'text' => $text,
+			'is_trusted' => true,
+		));
+	} else {
+		$comments_link = '';
+	}
+} else {
+	$comments_link = '';
+}
 
-		<div class="answers_answer_byline">
-			<div class="answers_answer_owner_icon">
-<?php
-	echo elgg_view_entity_icon($owner, 'tiny');
-	/*echo elgg_view("profile/icon",
-			array(
-				'entity' => $owner,
-				'size' => 'tiny'));*/
-?>
-			</div>
-			<div class="answers_answer_owner">
-				<a href="<?php echo $owner->getURL(); ?>"><?php echo $owner->name; ?></a> <?php echo elgg_view_friendly_time($answer->time_created); ?>
-			</div>
+$metadata = elgg_view_menu('entity', array(
+	'entity' => $answer,
+	'handler' => 'answers',
+	'sort_by' => 'priority',
+	'class' => 'elgg-menu-hz',
+));
 
-<?php
-				// if the user looking at the comment can edit, show the delete link
-				if ($full && $canedit) {
-?>
-					<div class="answers_answer_delete">
-			<?php
-					echo elgg_view("output/confirmlink", array(
-						'href' => "action/answers/delete?guid=" . $answer->getGUID(),
-						'text' => elgg_echo('delete'),
-						'confirm' => elgg_echo('deleteconfirm'),
-						'is_action' => true,
-					));
-			?>
-				</div>
-				<div class="answers_answer_delete">
-					<a rel="toggle"><?php echo elgg_echo('edit'); ?></a>
-				</div>
-				<div class="collapsible_box" style="clear:both;">
-<?php echo elgg_view("answers/forms/editanswer", $vars); ?>
-				</div>
-<?php
-				} //end of can edit if statement
-?>
+$subtitle = "$author_text $date $comments_link $categories";
 
-			<div><br/><br/></div>
+// do not show the metadata and controls in widget view
+if (elgg_in_context('widgets')) {
+	$metadata = '';
+}
+
+if ($full) {
+
+	$rating_block = elgg_view("answers/rating_block", $vars);
+
+	$body = elgg_view('output/longtext', array(
+		'value' => $answer->description,
+		'class' => 'question-post',
+	));
+
+	$params = array(
+		'entity' => $answer,
+		'title' => false,
+		'metadata' => $metadata,
+		'subtitle' => $subtitle,
+	);
+	$params = $params + $vars;
+	$summary = elgg_view('object/elements/summary', $params);
+
+	$answer_info = elgg_view_image_block($owner_icon, $summary, array('class' => 'mvs'));
+	
+	$answer_comments = elgg_list_annotations(array(
+		'guid' => $answer_guid,
+		'annotation_name' => 'generic_comment',
+		'full_view' => 'tiny',
+	));
+
+	if (elgg_is_logged_in()) {
+		$answer_add_comment = '<a rel="toggle" href="#comment-answer-' . $answer_guid . '" class="t mll add-comment">' . elgg_echo("generic_comments:add") . '</a>';
+		$answer_add_comment .= '<div id="comment-answer-' . $answer_guid . '" class="hidden">' . elgg_view_form('comments/add', '', $vars) . '</div>';
+	}
+		
+	echo <<<HTML
+<div id="elgg-object-{$answer->guid}" class="elgg-item-answer">
+	$rating_block
+	<div class="answer-content mbl">
+		$body
+		$answer_info
+		<div id="answer-comment-$answer_guid">
+			$answer_comments
+			$answer_add_comment
 		</div>
+	</div>
+</div>
+HTML;
 
+} else {
+	// brief view
 
+	$params = array(
+		'entity' => $answer,
+		'metadata' => $metadata,
+		'subtitle' => $subtitle,
+		'content' => $excerpt,
+	);
+	$params = $params + $vars;
+	$list_body = elgg_view('object/elements/summary', $params);
 
-<?php
-				if ($full) {
-					$comments = $answer->getAnnotations('comment', 9999, 0, "asc");
-					if ($comments) {
-						foreach ($comments as $comment) {
-							echo elgg_view("answers/comment", array('entity' => $comment));
-						}
-					}
-
-					// can this user add a comment - must be logged in or site admin
-					if (elgg_is_logged_in() || elgg_is_admin_logged_in()) {
-						//display the add comment form, this will appear after all the existing comments
-						echo elgg_view("answers/forms/comment", array('entity' => $answer));
-					}
-				}
-?>
-
-
-				<p>
-				</p>
-			</div><!-- end of generic_comment_details -->
-		</div><!-- end of generic_comment div -->
-<?php
-			}
+	echo elgg_view_image_block($owner_icon, $list_body);
+}

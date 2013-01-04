@@ -51,6 +51,7 @@ $english = array(
 	'answers:answer:tooltip:dislike' => "'dislike' this answer",
 	'answers:answer:tooltip:unlike' => "remove vote",
 	'answers:answer:tooltip:choose' => "choose this answer as best",
+	'answers:answer:tooltip:bestanswer' => "This answer was chosen as best answer by question's owner",
 	'answers:question:new' => "New question",
 	'answers:answer:new' => "New answer",
 	'answers:comment:comment' => "Add Comment",

@@ -158,7 +158,7 @@ function answers_owner_block_menu($hook, $type, $return, $params) {
 function answer_url($answer) {
 	$question = get_question_for_answer($answer);
 	if ($question) {
-		return $question->getURL() . "#" . $answer->getGUID();
+		return $question->getURL() . "#elgg-object-" . $answer->getGUID();
 	} else {
 		return '';
 	}
@@ -348,13 +348,6 @@ function get_question_for_answer($answer) {
 		if ($question) {
 			return $question;
 		}
-	}
-
-	$questions = get_entities_from_relationship("answer", $answer->getGUID(), true);
-	if (count($questions) > 0) {
-		return $questions[0];
-	} else {
-		return false;
 	}
 }
 
