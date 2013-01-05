@@ -34,7 +34,7 @@ function answers_init() {
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'answers_notify_message');
 
 	// support group questions/answers
-	elgg_extend_view('groups/tool_latest', 'answers/groupprofile_answers');
+	elgg_extend_view('groups/tool_latest', 'answers/group_module');
 	
 	//elgg_extend_view('object/answer', 'answers/best_answer'); @todo ? a voir
 	
