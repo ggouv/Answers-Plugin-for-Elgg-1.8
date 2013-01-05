@@ -41,6 +41,10 @@ elgg.answers.init = function() {
 						answer.find('.score div').not('.new').remove().add('.score div').removeClass('new');
 					});
 					
+					//add class
+					answer.find('.answer_like, .answer_dislike').removeClass('liked disliked');
+					if (json.output.like_dislike == 'like') answer.find('.answer_like').addClass('liked');
+					if (json.output.like_dislike == 'dislike') answer.find('.answer_dislike').addClass('disliked');
 				}
 			}
 		});

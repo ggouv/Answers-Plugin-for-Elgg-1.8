@@ -16,18 +16,20 @@ if ($subtype == 'question') {
 	$score = answers_overall_rating($entity);
 	
 	if ($entity->getOwnerGUID() != $user_guid) {
+		$liked = is_user_likes_answer($entity, $user_guid) == 'like' ? ' liked' : '';
 		$up = elgg_view('output/url', array(
 			'text' => '<div class="gwf">í</div>',
 			'href' => '#',
 			'is_trusted' => true,
-			'class' => 'answer_like'
+			'class' => "t answer_like$liked"
 		));
 	
+		$disliked = is_user_dislikes_answer($entity, $user_guid) == 'dislike' ? ' disliked' : '';
 		$down = elgg_view('output/url', array(
 			'text' => '<div class="gwf mbm">ì</div>',
 			'href' => '#',
 			'is_trusted' => true,
-			'class' => 'answer_dislike'
+			'class' => "t answer_dislike$disliked"
 		));
 	}
 	

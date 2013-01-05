@@ -28,6 +28,12 @@
 	font-size: 3em;
 	color: #CCC;
 }
+.rating-block > a.answer_like:hover, .rating-block > a.answer_dislike:hover {
+	font-size: 4em;
+}
+.rating-block > a.liked, .rating-block > a.disliked {
+	color: #ff9900;
+}
 .rating-block > .choose {
 	background-color: #CCC;
 	border-radius: 9px;
