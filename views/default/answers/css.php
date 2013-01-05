@@ -1,7 +1,3 @@
-.question-left-column {
-	float: left;
-	position: relative;
-}
 .question-content, .answer-content {
 	margin-left: 60px;
 }

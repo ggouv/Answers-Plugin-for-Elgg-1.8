@@ -55,6 +55,8 @@ if (elgg_in_context('widgets')) {
 
 if ($full) {
 
+	$rating_block = elgg_view("answers/rating_block", $vars);
+
 	$body = elgg_view('output/longtext', array(
 		'value' => $question->description,
 		'class' => 'question-post',
@@ -84,7 +86,7 @@ if ($full) {
 		
 	echo <<<HTML
 <div id="elgg-object-{$question->guid}" class="elgg-item-question">
-	<div class="question-left-column">$vote</div>
+	$rating_block
 	<div class="question-content mbl">
 		$question_info
 		$body

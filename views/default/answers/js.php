@@ -5,7 +5,7 @@ elgg.answers.init = function() {
 
 	// ajaxified action for vote
 	$('.answer_like, .answer_dislike').live('click', function(e) {
-		var answer = $(this).parents('.elgg-item-answer'),
+		var answer = $(this).parents('div[id*=elgg-object]'),
 			action = $(this).hasClass('answer_like') ? 'like' : 'dislike';
 
 		elgg.action('answer/'+action, {
@@ -46,6 +46,8 @@ elgg.answers.init = function() {
 					if (json.output.like_dislike == 'like') answer.find('.answer_like').addClass('liked');
 					if (json.output.like_dislike == 'dislike') answer.find('.answer_dislike').addClass('disliked');
 				}
+			}, error: function() {
+				elgg.register_error(elgg.echo('answers:liked:failure'));
 			}
 		});
 		e.preventDefault();
