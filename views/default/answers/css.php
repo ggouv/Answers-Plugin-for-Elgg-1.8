@@ -21,7 +21,8 @@
 }
 .rating-block .score {
 	font-weight: bold;
-	height: 20px;
+	height: 40px;
+	overflow: hidden;
 }
 .rating-block > a {
 	font-size: 3em;

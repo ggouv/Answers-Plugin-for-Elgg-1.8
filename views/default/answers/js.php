@@ -3,55 +3,49 @@ elgg.provide('elgg.answers');
 
 elgg.answers.init = function() {
 
-	// ajaxified action for vote up
-	$('.answers_like').live('click', function() {
-		if ($.data(this, 'clicked') || $(this).hasClass('checked')) { // Prevent double-click
-			return false;
-		} else {
-			$.data(this, 'clicked', true);
-			elgg.action('answer/like', {
-				data: {
-					answer_id: $('answer_id').val()
-				},
-				success: function(json) {
+	// ajaxified action for vote
+	$('.answer_like, .answer_dislike').live('click', function(e) {
+		var answer = $(this).parents('.elgg-item-answer'),
+			action = $(this).hasClass('answer_like') ? 'like' : 'dislike';
 
-					if ($('.answers_like').hasClass('answers_like_selected')) {
-						$('.answers_like').removeClass('answers_like_selected');
-						$('.answers_rating').val($('.answers_rating').val() - 1);
+		elgg.action('answer/'+action, {
+			data: {
+				answer_guid: answer.attr('id').replace(/elgg-object-/, ''),
+			},
+			success: function(json) {
+				if (json.status == 0) {
+					var oldDiv = answer.find('.score div'),
+						oldVal = parseInt(oldDiv.text()),
+						diff = json.output.score - oldVal,
+						h = oldDiv.outerHeight(),
+						array = [];
+					if (diff >= 1) {
+						var method = 'prepend',
+							h0 = -h*diff,
+							c = 1;
+					} else {
+						var method = 'append',
+							h0 = 0,
+							c = -1;
 					}
-					else {
-						$('.answers_like').addClass('answers_like_selected');
-						$('.answers_rating').val($('.answers_rating').val() + 1);
+
+					// add new value
+					for (var i = 1; i < Math.abs(diff)+1; i++) {
+						answer.find('.score')[method]($('<div>', {class: i == Math.abs(diff) ? 'pvm new' : 'pvm'}).text(oldVal + i*c));
 					}
 					
-					$.data(thisVote, 'clicked', false);
+					// animate
+					var firstDiv = answer.find('.score div:first-child').css({marginTop: h0});
+					if (method == 'prepend') h = 0;
+					firstDiv.animate({marginTop: -h*Math.abs(diff)}, 500, function() {
+						answer.find('.score div').not('.new').remove().add('.score div').removeClass('new');
+					});
+					
 				}
-			});
-		}
-	});
-
-	// ajaxified action for vote down
-	$('.answers_dislike').live('click', function() {
-		if ($.data(this, 'clicked') || $(this).hasClass('checked')) { // Prevent double-click
-			return false;
-		} else {
-			$.data(this, 'clicked', true);
-			elgg.action('answer/dislike', {
-				data: {
-					answer_id: $('answer_id').val()
-				},
-				success: function(json) {
-					if ($('.answers_dislike').hasClass('answers_dislike_selected')) {
-						$('.answers_dislike').removeClass('answers_dislike_selected');
-						$('.answers_rating').val($('.answers_rating').val() + 1);
-					} else {
-						$('.answers_dislike').addClass('answers_dislike_selected');
-						$('.answers_rating').val($('.answers_rating').val() - 1);
-					}
-					$.data(thisVote, 'clicked', false);
-				}
-			});
-		}
+			}
+		});
+		e.preventDefault();
+		return false;
 	});
 }
 elgg.register_hook_handler('init', 'system', elgg.answers.init);

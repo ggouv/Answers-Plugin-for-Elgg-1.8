@@ -13,20 +13,18 @@ if ($subtype == 'question') {
 } else if ($subtype == 'answer') {
 	$question = get_question_for_answer($entity);
 	
-	$count_like = answers_count_likes($entity);
-	$count_dislike = answers_count_dislikes($entity);
-	$score = $count_like - $count_dislike;
+	$score = answers_overall_rating($entity);
 	
 	if ($entity->getOwnerGUID() != $user_guid) {
 		$up = elgg_view('output/url', array(
-			'text' => '<div class="gwf mbm">í</div>',
+			'text' => '<div class="gwf">í</div>',
 			'href' => '#',
 			'is_trusted' => true,
 			'class' => 'answer_like'
 		));
 	
 		$down = elgg_view('output/url', array(
-			'text' => '<div class="gwf mtm">ì</div>',
+			'text' => '<div class="gwf mbm">ì</div>',
 			'href' => '#',
 			'is_trusted' => true,
 			'class' => 'answer_dislike'
@@ -40,7 +38,7 @@ if ($subtype == 'question') {
 	if ($question->getOwnerGUID() == $user_guid) {
 		if ($chosen) $class = ' chosen';
 		$chosen_view = elgg_view('output/url', array(
-			'text' => '<div class="gwf mtm">œ</div>',
+			'text' => '<div class="gwf">œ</div>',
 			'href' => elgg_get_site_url() . 'action/answer/choose?answer_id=' . $entity->getGUID(),
 			'class' => "choose tooltip w t$class",
 			'is_action' => true,
@@ -56,7 +54,7 @@ if ($subtype == 'question') {
 echo <<<HTML
 <div class="rating-block float center">
 	$up
-	<div class="score">$score</div>
+	<div class="score"><div class="pvm">$score</div></div>
 	$down
 	$chosen_view
 </div>

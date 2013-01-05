@@ -100,6 +100,7 @@ $english = array(
 	'answers:notfound' => "Sorry; we could not find the specified question.",
 	'answers:notdeleted' => "Sorry; deletion failed.",
 	'answers:liked:failure' => "Sorry; we failed to save your 'like'.",
+	'answers:liked:failure:owner' => "Sorry; you cannot like your own answer.",
 	'answers:disliked:failure' => "Sorry; we failed to save your 'dislike'.",
 	'answers:unliked:failure' => "Sorry; we failed to save your 'unlike'.",
 	
