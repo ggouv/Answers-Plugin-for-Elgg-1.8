@@ -23,22 +23,16 @@ if ($question instanceof ElggEntity && $question->getSubtype() == "question") {
 	// Set the title appropriately
 	$title = $question->title;
 	elgg_push_breadcrumb($title);
-/*
-	// Set the page owner
-	if ($question->container_guid) {
-		elgg_set_page_owner_guid($question->container_guid);
-	} else {
-		set_page_owner($question->owner_guid);
-	}*/
 
 	// Display question
 	$content = elgg_view_entity($question, array('full_view' => true));
 	
 	// Display answers
-	$answers = get_sorted_question_answers($question);
+	$answers = get_sorted_question_answers($question, $sort);
 	if (is_array($answers)) {
 		$chosen = '';
 		$others = '';
+		$chosen_answer_id = $question->chosen_answer;
 		
 		foreach ($answers as $answer) {
 			if ($answer->getGUID() == $chosen_answer_id) {

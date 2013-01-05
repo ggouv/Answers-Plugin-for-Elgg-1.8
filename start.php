@@ -274,17 +274,12 @@ function is_user_dislikes_answer($answer, $user_guid) {
  * @return <type>
  */
 function answers_get_like_dislike($answer, $user_guid) {
-	//$likes = elgg_get_annotation_from_id($answer->getGUID(), "", "", "like", "", $user_guid);
-	$likes = elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'like', 'annotation_owner_guids' => $user_guid));
-	if (is_array($likes) && count($likes) > 0) {
+	if (is_user_likes_answer($answer, $user_guid)) {
 		return 'like';
 	}
-	//$dislikes = elgg_get_annotation_from_id($answer->getGUID(), "", "", "dislike", "", $user_guid);
-	$dislikes = elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'dislike', 'annotation_owner_guids' => $user_guid));
-	if (is_array($dislikes) && count($dislikes) > 0) {
+	if (is_user_dislikes_answer($answer, $user_guid)) {
 		return 'dislike';
 	}
-
 	return false;
 }
 
@@ -320,12 +315,12 @@ function get_question_answers($question) {
 	$options = array(
 		'relationship' => 'answer',
 		'relationship_guid' => $question->getGUID(),
-		'limit' => 0,
+		'limit' => 0, // @todo Should enable pagination ?
 	);
 	return elgg_get_entities_from_relationship($options);
 }
 
-function get_sorted_question_answers($question) {
+function get_sorted_question_answers($question, $sort = 'votes') {
 	$unsorted_answers = get_question_answers($question);
 
 	$unsorted_ratings = array();
@@ -333,12 +328,23 @@ function get_sorted_question_answers($question) {
 	foreach ($unsorted_answers as $answer) {
 		$unsorted_ratings[] = answers_overall_rating($answer);
 		$unsorted_dates[] = $answer->time_created;
+		$unsorted_actions[] = $answer->last_action;
 	}
-
-	array_multisort($unsorted_ratings, SORT_DESC,
+	
+	if ($sort == 'oldest') {
+		array_multisort($unsorted_dates, SORT_DESC,
+			$unsorted_ratings, SORT_DESC,
+			$unsorted_answers);
+	} else if ($sort == 'active') {
+		array_multisort($unsorted_actions, SORT_DESC,
+			$unsorted_ratings, SORT_DESC,
+			$unsorted_answers);
+	} else {
+		array_multisort($unsorted_ratings, SORT_DESC,
 			$unsorted_dates, SORT_ASC,
 			$unsorted_answers);
-
+	}
+	
 	return $unsorted_answers;
 }
 
