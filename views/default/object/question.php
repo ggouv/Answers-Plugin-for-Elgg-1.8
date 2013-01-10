@@ -78,8 +78,7 @@ if ($full) {
 	));
 
 	if (elgg_is_logged_in()) {
-		$question_add_comment = '<a rel="toggle" href="#comment-question" class="t mll add-comment">' . elgg_echo("generic_comments:add") . '</a>';
-		$question_add_comment .= '<div id="comment-question" class="hidden">' . elgg_view_form('comments/add', '', $vars) . '</div>';
+		$question_add_comment = elgg_view('answers/comment_toggle', $vars);
 	}
 		
 	echo <<<HTML

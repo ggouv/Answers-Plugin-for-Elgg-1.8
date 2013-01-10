@@ -84,8 +84,7 @@ if ($full) {
 	));
 
 	if (elgg_is_logged_in()) {
-		$answer_add_comment = '<a rel="toggle" href="#comment-answer-' . $answer_guid . '" class="t mll add-comment">' . elgg_echo("generic_comments:add") . '</a>';
-		$answer_add_comment .= '<div id="comment-answer-' . $answer_guid . '" class="hidden">' . elgg_view_form('comments/add', '', $vars) . '</div>';
+		$answer_add_comment = elgg_view('answers/comment_toggle', $vars);
 	}
 		
 	echo <<<HTML
