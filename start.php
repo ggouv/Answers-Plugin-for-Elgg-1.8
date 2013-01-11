@@ -53,6 +53,7 @@ function answers_init() {
 	elgg_register_action("answer/dislike", "$action_path/dislike.php");
 
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'answers_setup_entity_menu_items');
 }
 
 /**
@@ -144,7 +145,29 @@ function answers_owner_block_menu($hook, $type, $return, $params) {
 	return $return;
 }
 
+/**
+ * Modify the menu for entities (questions and answers)
+ */
+function answers_setup_entity_menu_items($hook, $type, $menu, $params) {
+	$handler = elgg_extract('handler', $params, false);
+	if ($handler != 'answers') {
+		return $menu;
+	}
 
+	$entity = $params['entity'];
+	if (elgg_instanceof($entity, 'object', 'answer')) {
+		// edit of answers does not work currently
+		// also, we want people to vote for an answer, not like it
+		foreach ($menu as $index => $item) {
+			$name = $item->getName();
+			if ($name == 'edit' || $name == 'likes') {
+				unset($menu[$index]);
+			}
+		}
+	}
+	
+	return $menu;
+}
 
 /**
  * Override the answer object URL
