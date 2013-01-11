@@ -12,13 +12,13 @@ $params = array(
 	'value' => $vars['entity']->num_display,
 	'options' => array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
 );
-$num_dropdown = elgg_view('input/pulldown', $params);
+$num_dropdown = elgg_view('input/dropdown', $params);
 
 ?>
-<p>
+<div>
 	<?php echo elgg_echo('answers:widget:numbertodisplay'); ?>:
 	<?php echo $num_dropdown; ?>
-</p>
+</div>
 
 <?php
 
@@ -35,10 +35,10 @@ $params = array(
 		'friends' => elgg_echo('friends'),
 	),
 );
-$type_dropdown = elgg_view('input/pulldown', $params);
+$type_dropdown = elgg_view('input/dropdown', $params);
 
 ?>
-<p>
+<div>
 	<?php echo elgg_echo('answers:widget:type'); ?>:
 	<?php echo $type_dropdown; ?>
-</p>
+</div>
