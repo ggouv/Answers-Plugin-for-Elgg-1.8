@@ -6,7 +6,6 @@
 // Get input
 $question_id = (int) get_input('question_guid');
 $answer_text = get_input('answer_text');
-$user = $_SESSION['user']->getGUID();
 
 $question = get_entity($question_id);
 
@@ -83,8 +82,16 @@ if ($question->owner_guid != $user->guid) {
 			'method' => "email",
 		);
 		$msg = answers_notify_message("", "", "", $params);
+		//$subject = elgg_echo('answers:notify:answer:subject', array(
+		//	$user->name,
+		//	$question->title,
+		//));
+
+		// yuck - pulled from how object_notifications() does the subject
+		global $CONFIG;
+		$subject = $CONFIG->register_objects['object']['answer'];
 		
-		notify_user($question_owner->guid, $user->guid, $msg['subject'], $msg['body']);
+		notify_user($question_owner->guid, $user->guid, $subject, $msg);
 	}
 }
 

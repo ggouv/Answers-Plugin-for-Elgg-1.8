@@ -368,11 +368,10 @@ function answers_get_question_for_answer($answer) {
 	}
 }
 
-function answers_notify_message($hook, $entity_type, $returnvalue, $params) {
+function answers_notify_message($hook, $type, $result, $params) {
 	$entity = $params['entity'];
-	$method = $params['method'];
 
-	if ($entity instanceof ElggEntity) {
+	if (elgg_instanceof($entity, 'object')) {
 		$subtype = $entity->getSubtype();
 		if ($subtype == 'question' || $subtype == 'answer') {
 
@@ -380,22 +379,26 @@ function answers_notify_message($hook, $entity_type, $returnvalue, $params) {
 			$owner = $entity->getOwnerEntity();
 
 			$ret = array();
-			$ret['body'] = $descr;
 
-			if ($subtype == 'answer') { // answer
+			if ($subtype == 'answer') {
 				$question = answers_get_question_for_answer($entity);
-				$ret['subject'] = sprintf(elgg_echo('answers:notify:answer:subject'),
-						$owner->name, $question->title);
-			} else { // question
-				$ret['subject'] = sprintf(elgg_echo('answers:notify:question:subject'),
-						$owner->name, $entity->title);
+				$subject = elgg_echo('answers:notify:answer:subject', array(
+					$owner->name,
+					$question->title,
+				));
+			} else {
+				$subject = elgg_echo('answers:notify:question:subject', array(
+					$owner->name, 
+					$entity->title,
+				));
 			}
 
-			$link = sprintf(elgg_echo('answers:notify:body'),
-					elgg_echo("answers:$subtype"), $entity->getURL());
+			$link = elgg_echo('answers:notify:body', array(
+						elgg_echo("answers:$subtype"),
+						$entity->getURL()
+					));
 
-			$ret['body'] = $ret['subject'] . "\n\n" . $ret['body'] . "\n\n\n" . $link;
-			return $ret;
+			return $subject . "\n\n" . $descr . "\n\n\n" . $link;
 		}
 	}
 	return null;
