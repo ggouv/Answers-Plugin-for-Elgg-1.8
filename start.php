@@ -34,10 +34,7 @@ function answers_init() {
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'answers_notify_message');
 
 	// support group questions/answers
-	elgg_extend_view('groups/tool_latest', 'answers/group_module');
-	
-	//elgg_extend_view('object/answer', 'answers/best_answer'); @todo ? a voir
-	
+	elgg_extend_view('groups/tool_latest', 'answers/group_module');	
 	add_group_tool_option('answers', elgg_echo('groups:enableanswers'), true);
 
 	// register questions and answers for search
@@ -402,54 +399,4 @@ function answers_notify_message($hook, $entity_type, $returnvalue, $params) {
 		}
 	}
 	return null;
-}
-
-function answers_notify_comment($object, $comment_text, $commenter) {
-	global $CONFIG;
-
-	// find interested users
-	// - question owner
-	// - if commenting on answer, answer owner
-	// - should these be added, too?
-	//   - other answers owners
-	//   - other commenters
-	//   - followers of the commenter
-	//   - group members (if group question)
-
-	$commenter_guid = $commenter->guid;
-	$interested_users = array();
-
-	$question = $object;
-	$answer = null;
-	$subtype = $object->getSubtype();
-	if ($subtype == 'answer') {
-		$answer = $object;
-		$question = answers_get_question_for_answer($answer);
-	}
-
-	if ($question->owner_guid != $commenter_guid) {
-		$interested_users[] = $question->owner_guid;
-	}
-	if ($answer && $answer->owner_guid != $commenter_guid) {
-		$interested_users[] = $answer->owner_guid;
-	}
-
-	$interested_users = array_unique($interested_users);
-
-	$email_subject = sprintf(elgg_echo('answers:' . $subtype . ':comment:email:subject'), $question->title);
-	$email_body = sprintf(elgg_echo('answers:' . $subtype . ':comment:email:body'),
-					$commenter->name,
-					$question->title,
-					$comment_text,
-					$object->getURL(),
-					$commenter->getURL()
-	);
-	foreach ($interested_users as $user_guid) {
-		$user = get_user($user_guid);
-		notify_user($user_guid, $commenter_guid, $email_subject, $email_body);
-	}
-}
-
-function answers_can_edit_comment($comment) {
-	return ($comment->owner_guid == $_SESSION["guid"] || elgg_is_admin_logged_in());
 }
