@@ -13,7 +13,7 @@ $sort = elgg_extract('sort', $vars, 'votes');
 $content = elgg_view_entity($question, array('full_view' => true));
 	
 // Display answers
-$answers = get_sorted_question_answers($question, $sort);
+$answers = answers_get_sorted_question_answers($question, $sort);
 if (is_array($answers)) {
 	$chosen = '';
 	$others = '';

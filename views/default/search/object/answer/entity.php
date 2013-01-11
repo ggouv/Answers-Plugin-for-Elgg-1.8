@@ -23,7 +23,7 @@ if (!$icon) {
 	}
 }
 
-$question = get_question_for_answer($entity);
+$question = answers_get_question_for_answer($entity);
 $title = $question->title;
 $description = $entity->getVolatileData('search_matched_description');
 $extra_info = $entity->getVolatileData('search_matched_extra');
