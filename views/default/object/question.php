@@ -97,6 +97,15 @@ HTML;
 
 } else {
 	// brief view
+	
+	// this needs to be clean up
+	$num_answers = answers_count_question_answers($question);
+	if ($num_answers == 1) {
+		$text = elgg_echo('answers:answer');
+	} else {
+		$text = elgg_echo('answers:answers');
+	}
+	$subtitle .= "<div class=\"mts\">$num_answers $text</div>";
 
 	$params = array(
 		'entity' => $question,
