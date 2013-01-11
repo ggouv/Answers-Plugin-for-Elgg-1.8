@@ -41,8 +41,8 @@ function answers_init() {
 	add_group_tool_option('answers', elgg_echo('groups:enableanswers'), true);
 
 	// register questions and answers for search
-	///elgg_register_event_handler('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
-	//elgg_register_event_handler('object', 'answer');
+	elgg_register_entity_type('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
+	elgg_register_entity_type('object', 'answer');
 	
 	// register actions. Les actions sont dans le dossier actions/answers. C'est mieux si on veut les overrider.
 	$action_path = "$root/actions/answers";
