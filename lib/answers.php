@@ -13,7 +13,7 @@
  */
 function answers_prepare_form_vars($question = null) {
 	$values = array(
-		'title' => '',
+		'title' => get_input('search', ''),
 		'description' => '',
 		'access_id' => ACCESS_DEFAULT,
 		'tags' => '',
