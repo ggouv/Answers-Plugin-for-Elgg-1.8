@@ -359,6 +359,7 @@ function answers_get_sorted_question_answers($question, $sort = 'votes') {
 
 	$unsorted_ratings = array();
 	$unsorted_dates = array();
+	$unsorted_actions = array();
 	foreach ($unsorted_answers as $answer) {
 		$unsorted_ratings[] = answers_overall_rating($answer);
 		$unsorted_dates[] = $answer->time_created;
@@ -371,7 +372,7 @@ function answers_get_sorted_question_answers($question, $sort = 'votes') {
 			$unsorted_answers);
 	} else if ($sort == 'active') {
 		array_multisort($unsorted_actions, SORT_DESC,
-			$unsorted_ratings, SORT_DESC,
+			$unsorted_ratings, SORT_DESC, // @ManUtopiK I think we don't need it, $unsorted_actions is based on timestamp. What about ?
 			$unsorted_answers);
 	} else {
 		array_multisort($unsorted_ratings, SORT_DESC,
@@ -380,6 +381,43 @@ function answers_get_sorted_question_answers($question, $sort = 'votes') {
 	}
 	
 	return $unsorted_answers;
+}
+
+function answers_get_sorted_questions($owner_guid, $sort = 'newest') {
+	$unsorted_questions = elgg_get_entities(array(
+		'type' => 'object',
+		'subtype' => 'question',
+		'container_guid' => $owner_guid,
+	));
+
+	if ($sort != 'newest') { // elgg_get_entities already filter by dates. Doesn't need array_multisort.
+		$unsorted_ratings = array();
+		$unsorted_actions = array();
+		$unsorted_answers = array();
+		foreach ($unsorted_questions as $question) {
+			$unsorted_ratings[] = answers_overall_rating($question);
+			$unsorted_dates[] = $question->time_created;
+			$unsorted_actions[] = $question->last_action; // @todo: answer question or vote answer update question last_action ?
+			$unsorted_answers[] = answers_count_question_answers($question);
+		}
+		
+		if ($sort == 'votes') {
+			array_multisort($unsorted_ratings, SORT_DESC, // most voted
+				$unsorted_dates, SORT_ASC, // oldest
+				$unsorted_questions);
+		} else if ($sort == 'activity') {
+			array_multisort($unsorted_actions, SORT_DESC, // most recently edited
+				$unsorted_ratings, SORT_DESC, // most voted. @ManUtopiK I think we don't need it, $unsorted_actions is based on timestamp. What about ?
+				$unsorted_questions);
+		} else if ($sort == 'unanswered') { // @todo change to less answered ?
+			array_multisort($unsorted_answers, SORT_ASC, // less answered
+				$unsorted_ratings, SORT_DESC, // most voted. That's mind it's a popular question without answer
+				$unsorted_dates, SORT_ASC, // oldest
+				$unsorted_questions);
+		}
+	}
+	
+	return $unsorted_questions;
 }
 
 function answers_get_question_for_answer($answer) {
