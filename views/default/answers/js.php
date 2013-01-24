@@ -53,5 +53,70 @@ elgg.answers.init = function() {
 		e.preventDefault();
 		return false;
 	});
+	
+	// live search
+	var timeout;
+	$("#answers-textarea").keypress(function(e) {
+		if ( $(this).val().length > 140 && e.which != 8 || e.which == 13) return false;
+		elgg.answers.textCounter(this, $("#answers-characters-remaining span"), 140);
+		var search_input = $(this).val();
+		var search_container = $('#answers-search-response');
+
+		if (search_input.length > 3) {
+			if (timeout) {
+				clearTimeout(timeout);
+				timeout = null;
+			}
+			
+			timeout = setTimeout(function() {
+				search_input = $("#answers-textarea").val();
+				if (search_input.length > 3) { // @todo check why need to do it again ?
+					elgg.post('ajax/view/answers/search', {
+						data: {
+							group:elgg.get_page_owner_guid(),
+							keyword: $("#answers-textarea").val()
+						},
+						beforeSend:  function() {
+							$('#answers-characters-remaining').addClass('loading');
+						},
+						success: function(response) {
+							clearTimeout(timeout);
+							$('.elgg-menu-filter-default, .elgg-list-entity').hide();
+							if ( search_container.is(':hidden') ) {
+								search_container.css('opacity', 0).html(response).fadeTo('slow', 1);
+							} else {
+								search_container.html(response);
+							}
+							$('#answers-characters-remaining').removeClass("loading");
+						}
+					});
+				}
+			}, 500);
+		} else if ( $('.elgg-list-entity').css('opacity') != '1' || $('.elgg-list-entity').is(":hidden") ) {
+			search_container.hide().html('');
+			$('.elgg-menu-filter-default, .elgg-list-entity').css('opacity', 0).fadeTo('slow', 1);
+		}
+	});
 }
 elgg.register_hook_handler('init', 'system', elgg.answers.init);
+
+
+/**
+ * Update the number of characters left with every keystroke
+ *
+ * @param {Object}  textarea
+ * @param {Object}  status
+ * @param {integer} limit
+ * @return void
+ */
+elgg.answers.textCounter = function(textarea, status, limit) {
+
+	var remaining_chars = limit - $(textarea).val().length;
+	status.html(remaining_chars);
+
+	if (remaining_chars < 0) {
+		status.parent().css("color", "#D40D12");
+	} else {
+		status.parent().css("color", "");
+	}
+}

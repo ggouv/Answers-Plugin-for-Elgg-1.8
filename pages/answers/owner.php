@@ -13,8 +13,6 @@ if (!$page_owner) {
 
 elgg_push_breadcrumb($page_owner->name);
 
-elgg_register_title_button();
-
 $questions = answers_get_sorted_questions($page_owner->guid, $sort);
 
 $content = elgg_view_entity_list($questions, array(
@@ -38,7 +36,8 @@ if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
 }
 
 if ($page_owner->type == 'group') {
-	$vars['filter'] = elgg_view('answers/filter_questions', array(
+	$vars['filter'] = elgg_view('answers/search_and_submit_question');
+	$vars['filter'].= elgg_view('answers/filter_questions', array(
 		'sort' => $sort
 	));
 }

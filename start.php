@@ -21,6 +21,9 @@ function answers_init() {
 	// Extend css and js
 	elgg_extend_view('css/elgg', 'answers/css');
 	elgg_extend_view('js/elgg', 'answers/js');
+	
+	// live search
+	elgg_register_ajax_view('answers/search');
 
 	elgg_register_widget_type('answers', elgg_echo('answers'), elgg_echo('answers:widget'));
 

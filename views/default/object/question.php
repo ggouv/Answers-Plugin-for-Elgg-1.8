@@ -61,7 +61,7 @@ if (elgg_in_context('widgets')) {
 	$metadata = '';
 }
 
-if ($full) {
+if ($full === true) {
 
 	$rating_block = elgg_view("answers/rating_block", $vars);
 
@@ -118,7 +118,7 @@ HTML;
 		<div class="pvs">$score</div>
 		$score_text
 	</div>
-	<div class="answers pts">
+	<div class="answers">
 		<div>$num_answers</div>
 		$answers_text
 	</div>

@@ -56,12 +56,14 @@
 }
 .elgg-list .rating-block .briefscore {
 	font-weight: bold;
+	border-bottom: 1px solid #DEDEDE;
 }
 .elgg-list .rating-block .briefscore > div {
 	font-size: 2em;
 }
 .elgg-list .rating-block .answers {
 	font-size: 0.8em;
+	padding-top: 2px;
 }
 .elgg-list .rating-block .answers > div {
 	font-size: 1.8em;
@@ -141,7 +143,13 @@
 	padding-top: 7px;
 }
 
-
+#answers-characters-remaining.loading {
+	background: url('<?php echo elgg_get_site_url(); ?>/mod/Answers-Plugin-for-Elgg-1.8/graphics/ajax-loader.gif') no-repeat scroll 0 6px transparent;
+	padding-left: 20px;
+}
+.answers-highlight {
+	background-color: yellow;
+}
 /*
 .collapsible_box {
 	background:#dedede;
