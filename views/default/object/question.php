@@ -80,8 +80,7 @@ if ($full) {
 	));
 
 	if (elgg_is_logged_in()) {
-		$question_add_comment = '<a rel="toggle" href="#comment-question" class="t mll add-comment">' . elgg_echo("generic_comments:add") . '</a>';
-		$question_add_comment .= '<div id="comment-question" class="hidden">' . elgg_view_form('comments/add', '', $vars) . '</div>';
+		$question_add_comment = elgg_view('answers/comment_toggle', $vars);
 	}
 		
 	echo <<<HTML
@@ -100,6 +99,15 @@ HTML;
 
 } else {
 	// brief view
+	
+	// this needs to be clean up
+	$num_answers = answers_count_question_answers($question);
+	if ($num_answers == 1) {
+		$text = elgg_echo('answers:answer');
+	} else {
+		$text = elgg_echo('answers:answers');
+	}
+	$subtitle .= "<div class=\"mts\">$num_answers $text</div>";
 
 	$params = array(
 		'entity' => $question,

@@ -13,7 +13,7 @@ $icon = elgg_view_entity_icon($owner, 'small');
 			'entity' => $owner,
 			'size' => 'small',
 		));*/
-$count_answers = count_question_answers($vars['entity']);
+$count_answers = answers_count_question_answers($vars['entity']);
 $info = "<p>".elgg_echo('answers:question').": <a href=\"{$vars['entity']->getURL()}\">{$vars['entity']->title}</a></p>";
 //$info .= "<p class=\"owner_timestamp\">{$friendlytime} ({$count_answers} answer" . ($count_answers == 1 ? "" : "s") . ($vars['entity']->chosen_answer ? " - resolved" : "") . ")</p>";
 $info .= "<p class=\"owner_timestamp\"><a href=\"{$vars['url']}answers/owner/{$owner->username}/\">{$owner->name}</a> {$friendlytime}";

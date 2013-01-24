@@ -7,33 +7,31 @@
 $entity = $vars['entity'];
 $user_guid = elgg_get_logged_in_user_guid();
 
-$score = answers_overall_rating($entity);
-
-if ($entity->getOwnerGUID() != $user_guid) {
-	$liked = is_user_likes_answer($entity, $user_guid) == 'like' ? ' liked' : '';
-	$up = elgg_view('output/url', array(
-		'text' => '<div class="gwf">í</div>',
-		'href' => '#',
-		'is_trusted' => true,
-		'class' => "t answer_like$liked"
-	));
-
-	$disliked = is_user_dislikes_answer($entity, $user_guid) == 'dislike' ? ' disliked' : '';
-	$down = elgg_view('output/url', array(
-		'text' => '<div class="gwf mbm">ì</div>',
-		'href' => '#',
-		'is_trusted' => true,
-		'class' => "t answer_dislike$disliked"
-	));
-}
-
 $subtype = $entity->getSubtype();
 if ($subtype == 'question') {
-	if ($entity->getOwnerGUID() != $user_guid) {
-	
-	}
+
 } else if ($subtype == 'answer') {
-	$question = get_question_for_answer($entity);
+	$question = answers_get_question_for_answer($entity);
+	
+	$score = answers_overall_rating($entity);
+	
+	if ($entity->getOwnerGUID() != $user_guid) {
+		$liked = answers_does_user_like_answer($entity, $user_guid) == 'like' ? ' liked' : '';
+		$up = elgg_view('output/url', array(
+			'text' => '<div class="gwf">í</div>',
+			'href' => '#',
+			'is_trusted' => true,
+			'class' => "t answer_like$liked"
+		));
+	
+		$disliked = answers_does_user_dislike_answer($entity, $user_guid) == 'dislike' ? ' disliked' : '';
+		$down = elgg_view('output/url', array(
+			'text' => '<div class="gwf mbm">ì</div>',
+			'href' => '#',
+			'is_trusted' => true,
+			'class' => "t answer_dislike$disliked"
+		));
+	}
 	
 	if ($question->chosen_answer == $entity->getGUID()) {
 		$chosen = true;

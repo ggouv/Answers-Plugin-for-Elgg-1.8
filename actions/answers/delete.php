@@ -15,14 +15,14 @@ if (!$entity->canEdit()) {
 if (elgg_instanceof($entity, 'object', 'question')) {
 	$owner = $entity->getOwnerEntity();
 	$forward_url = 'answers/owner/' . $owner->username;
-	$answers = get_question_answers($entity);
+	$answers = answers_get_question_answers($entity);
 	if ($answers && is_array($answers)) {
 		foreach ($answers as $answer) {
 			$answer->delete();
 		}
 	}	
 } else if (elgg_instanceof($entity, 'object', 'answer')) {
-	$question = get_question_for_answer($entity);
+	$question = answers_get_question_for_answer($entity);
 	$forward_url = $question->getURL();
 } else {
 	// @todo

@@ -16,7 +16,7 @@ if ($entity = get_entity($entity_guid)) {
 	}
 
 	// check the actual user opinion
-	if (is_user_dislikes_answer($entity, $user_guid)) {
+	if (answers_does_user_dislike_answer($entity, $user_guid)) {
 		$action_result = answers_unlike($entity, $user_guid);
 	}
 	else {
