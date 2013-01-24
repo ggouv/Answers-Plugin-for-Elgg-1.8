@@ -98,6 +98,8 @@ HTML;
 
 } else {
 	// brief view
+	elgg_load_library('answers:utilities'); // need it for brief view in group module
+	
 	$score = answers_overall_rating($question);
 	if ($score > 1) {
 		$score_text = elgg_echo('answers:score:more');
