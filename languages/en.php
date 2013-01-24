@@ -56,6 +56,8 @@ $english = array(
 	'answers:answer:new' => "New answer",
 	'answers:comment:comment' => "Add Comment",
 	'answers:comment:save' => "Post",
+	'answers:score:one' => "vote",
+	'answers:score:more' => "votes",
 
 	/**
 	 * Answers river

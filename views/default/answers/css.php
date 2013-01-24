@@ -5,14 +5,13 @@
 	content: "";
 	display: inline-block;
 }
-.question-view .rating-block, .question-view .rating-block > * {
+.rating-block, .rating-block > * {
 	width: 50px;
-	text-decoration: none;
 }
 .question-view .rating-block .gwf {
 	float: none;
 }
-.rating-block > div {
+.rating-block .score {
 	font-size: 2em;
 }
 .rating-block .score {
@@ -23,6 +22,7 @@
 .rating-block > a {
 	font-size: 3em;
 	color: #CCC;
+	text-decoration: none;
 }
 .rating-block > a.answer_like:hover, .rating-block > a.answer_dislike:hover {
 	font-size: 4em;
@@ -49,6 +49,24 @@
 .rating-block > div.choose.chosen:hover {
 	cursor: default;
 }
+/* rating-block in brief view */
+.elgg-list .rating-block {
+	border: 1px solid #DEDEDE;
+	border-radius: 5px;
+}
+.elgg-list .rating-block .briefscore {
+	font-weight: bold;
+}
+.elgg-list .rating-block .briefscore > div {
+	font-size: 2em;
+}
+.elgg-list .rating-block .answers {
+	font-size: 0.8em;
+}
+.elgg-list .rating-block .answers > div {
+	font-size: 1.8em;
+}
+
 .question-content .question-post {
 	border-bottom: 1px dotted #CCC;
 	padding-bottom: 20px;
