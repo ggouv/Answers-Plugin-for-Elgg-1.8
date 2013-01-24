@@ -13,21 +13,17 @@ if (!$icon) {
 	// @todo allow an option to switch to displaying the entity's icon instead.
 	$type = $entity->getType();
 	if ($type == 'user' || $type == 'group') {
-		$icon = elgg_view('profile/icon', array('entity' => $entity, 'size' => 'small'));
+		$icon = elgg_view_entity_icon($entity, 'tiny');
 	} elseif ($owner = $entity->getOwnerEntity()) {
-		$icon = elgg_view('profile/icon', array('entity' => $owner, 'size' => 'small'));
+		$icon = elgg_view_entity_icon($owner, 'tiny');
 	} else {
 		// display a generic icon if no owner, though there will probably be
 		// other problems if the owner can't be found.
-		$icon = elgg_view(
-			'graphics/icon', array(
-				'entity' => $entity,
-				'size' => 'small',
-				));
+		$icon = elgg_view_entity_icon($entity, 'tiny');
 	}
 }
 
-$question = get_question_for_answer($entity);
+$question = answers_get_question_for_answer($entity);
 $title = $question->title;
 $description = $entity->getVolatileData('search_matched_description');
 $extra_info = $entity->getVolatileData('search_matched_extra');
@@ -42,21 +38,13 @@ $time = $entity->getVolatileData('search_time');
 if (!$time) {
 	$tc = $entity->time_created;
 	$tu = $entity->time_updated;
-	$time = friendly_time(($tu > $tc) ? $tu : $tc);
+	$time = elgg_view_friendly_time(($tu > $tc) ? $tu : $tc);
 }
-?>
-<div class="search_listing">
-<div class="search_listing_icon"><?php echo $icon; ?></div>
-	<div class="search_listing_info">
-		<p class="item_title"><?php echo $title; ?></p>
-		<p class="item_description"><?php echo $description; ?></p>
-<?php
+
+$body = "<p class=\"mbn\">$title</p>$description";
 if ($extra_info) {
-?>
-		<p class="item_extra"><?php echo $extra_info; ?></p>
-<?php
+	$body .= "<p class=\"elgg-subtext\">$extra_info</p>";
 }
-?>
-		<p class="item_timestamp"><?php echo $time; ?></p>
-	</div>
-</div>
+$body .= "<p class=\"elgg-subtext\">$time</p>";
+
+echo elgg_view_image_block($icon, $body);

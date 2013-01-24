@@ -34,15 +34,12 @@ function answers_init() {
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'answers_notify_message');
 
 	// support group questions/answers
-	elgg_extend_view('groups/tool_latest', 'answers/group_module');
-	
-	//elgg_extend_view('object/answer', 'answers/best_answer'); @todo ? a voir
-	
+	elgg_extend_view('groups/tool_latest', 'answers/group_module');	
 	add_group_tool_option('answers', elgg_echo('groups:enableanswers'), true);
 
 	// register questions and answers for search
-	///elgg_register_event_handler('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
-	//elgg_register_event_handler('object', 'answer');
+	elgg_register_entity_type('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
+	elgg_register_entity_type('object', 'answer');
 	
 	// register actions. Les actions sont dans le dossier actions/answers. C'est mieux si on veut les overrider.
 	$action_path = "$root/actions/answers";
@@ -56,6 +53,7 @@ function answers_init() {
 	elgg_register_action("answer/dislike", "$action_path/dislike.php");
 
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'answers_setup_entity_menu_items');
 }
 
 /**
@@ -147,7 +145,29 @@ function answers_owner_block_menu($hook, $type, $return, $params) {
 	return $return;
 }
 
+/**
+ * Modify the menu for entities (questions and answers)
+ */
+function answers_setup_entity_menu_items($hook, $type, $menu, $params) {
+	$handler = elgg_extract('handler', $params, false);
+	if ($handler != 'answers') {
+		return $menu;
+	}
 
+	$entity = $params['entity'];
+	if (elgg_instanceof($entity, 'object', 'answer')) {
+		// edit of answers does not work currently
+		// also, we want people to vote for an answer, not like it
+		foreach ($menu as $index => $item) {
+			$name = $item->getName();
+			if ($name == 'edit' || $name == 'likes') {
+				unset($menu[$index]);
+			}
+		}
+	}
+	
+	return $menu;
+}
 
 /**
  * Override the answer object URL
@@ -156,7 +176,7 @@ function answers_owner_block_menu($hook, $type, $return, $params) {
  * @return string
  */
 function answer_url($answer) {
-	$question = get_question_for_answer($answer);
+	$question = answers_get_question_for_answer($answer);
 	if ($question) {
 		return $question->getURL() . "#elgg-object-" . $answer->getGUID();
 	} else {
@@ -193,10 +213,11 @@ function answers_overall_rating($answer) {
  * @return int
  */
 function answers_count_likes($answer) {
-	//hw: right usage?
-	return elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'like', 'count' => true));
-	//return count_annotations($answer->getGUID(), "", "", "like");
-	
+	return elgg_get_annotations(array(
+		'guid' => $answer->getGUID(),
+		'annotation_name' => 'like',
+		'count' => true,
+	));
 }
 
 /**
@@ -206,8 +227,11 @@ function answers_count_likes($answer) {
  * @return int
  */
 function answers_count_dislikes($answer) {
-	return elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'dislike', 'count' => true));
-	//return count_annotations($answer->getGUID(), "", "", "dislike");
+	return elgg_get_annotations(array(
+		'guid' => $answer->getGUID(),
+		'annotation_name' => 'dislike',
+		'count' => true,
+	));
 }
 
 /**
@@ -248,8 +272,12 @@ function answers_unlike($answer, $user_guid) {
 	return true;
 }
 
-function is_user_likes_answer($answer, $user_guid) {
-	$likes = elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'like', 'annotation_owner_guids' => $user_guid));
+function answers_does_user_like_answer($answer, $user_guid) {
+	$likes = elgg_get_annotations(array(
+		'guid' => $answer->getGUID(),
+		'annotation_name' => 'like',
+		'annotation_owner_guids' => $user_guid,
+	));
 	if (is_array($likes) && count($likes) > 0) {
 		return 'like';
 	}
@@ -257,8 +285,12 @@ function is_user_likes_answer($answer, $user_guid) {
 	return false;
 }
 
-function is_user_dislikes_answer($answer, $user_guid) {
-	$dislikes = elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_name' => 'dislike', 'annotation_owner_guids' => $user_guid));
+function answers_does_user_dislike_answer($answer, $user_guid) {
+	$dislikes = elgg_get_annotations(array(
+		'guid' => $answer->getGUID(),
+		'annotation_name' => 'dislike',
+		'annotation_owner_guids' => $user_guid,
+	));
 	if (is_array($dislikes) && count($dislikes) > 0) {
 		return 'dislike';
 	}
@@ -274,10 +306,10 @@ function is_user_dislikes_answer($answer, $user_guid) {
  * @return <type>
  */
 function answers_get_like_dislike($answer, $user_guid) {
-	if (is_user_likes_answer($answer, $user_guid)) {
+	if (answers_does_user_like_answer($answer, $user_guid)) {
 		return 'like';
 	}
-	if (is_user_dislikes_answer($answer, $user_guid)) {
+	if (answers_does_user_dislike_answer($answer, $user_guid)) {
 		return 'dislike';
 	}
 	return false;
@@ -290,8 +322,10 @@ function answers_get_like_dislike($answer, $user_guid) {
  * @param <type> $user_guid
  */
 function answers_clear_like_dislike($answer, $user_guid) {
-	$annotations = elgg_get_annotations(array('guid' => $answer->getGUID(), 'annotation_owner_guids' => $user_guid));
-	//$annotations = get_annotations($answer->getGUID(), "", "", "", "", $user_guid);
+	$annotations = elgg_get_annotations(array(
+		'guid' => $answer->getGUID(),
+		'annotation_owner_guids' => $user_guid,
+	));
 	
 	if (is_array($annotations)) {
 		foreach ($annotations as $anno) {
@@ -302,7 +336,7 @@ function answers_clear_like_dislike($answer, $user_guid) {
 	}
 }
 
-function count_question_answers($question) {
+function answers_count_question_answers($question) {
 	$options = array(
 		'relationship' => 'answer',
 		'relationship_guid' => $question->getGUID(),
@@ -311,7 +345,7 @@ function count_question_answers($question) {
 	return elgg_get_entities_from_relationship($options);
 }
 
-function get_question_answers($question) {
+function answers_get_question_answers($question) {
 	$options = array(
 		'relationship' => 'answer',
 		'relationship_guid' => $question->getGUID(),
@@ -320,8 +354,8 @@ function get_question_answers($question) {
 	return elgg_get_entities_from_relationship($options);
 }
 
-function get_sorted_question_answers($question, $sort = 'votes') {
-	$unsorted_answers = get_question_answers($question);
+function answers_get_sorted_question_answers($question, $sort = 'votes') {
+	$unsorted_answers = answers_get_question_answers($question);
 
 	$unsorted_ratings = array();
 	$unsorted_dates = array();
@@ -348,7 +382,7 @@ function get_sorted_question_answers($question, $sort = 'votes') {
 	return $unsorted_answers;
 }
 
-function get_question_for_answer($answer) {
+function answers_get_question_for_answer($answer) {
 	if ($answer->question_guid) {
 		$question = get_entity($answer->question_guid);
 		if ($question) {
@@ -357,11 +391,10 @@ function get_question_for_answer($answer) {
 	}
 }
 
-function answers_notify_message($hook, $entity_type, $returnvalue, $params) {
+function answers_notify_message($hook, $type, $result, $params) {
 	$entity = $params['entity'];
-	$method = $params['method'];
 
-	if ($entity instanceof ElggEntity) {
+	if (elgg_instanceof($entity, 'object')) {
 		$subtype = $entity->getSubtype();
 		if ($subtype == 'question' || $subtype == 'answer') {
 
@@ -369,74 +402,27 @@ function answers_notify_message($hook, $entity_type, $returnvalue, $params) {
 			$owner = $entity->getOwnerEntity();
 
 			$ret = array();
-			$ret['body'] = $descr;
 
-			if ($subtype == 'answer') { // answer
-				$question = get_question_for_answer($entity);
-				$ret['subject'] = sprintf(elgg_echo('answers:notify:answer:subject'),
-						$owner->name, $question->title);
-			} else { // question
-				$ret['subject'] = sprintf(elgg_echo('answers:notify:question:subject'),
-						$owner->name, $entity->title);
+			if ($subtype == 'answer') {
+				$question = answers_get_question_for_answer($entity);
+				$subject = elgg_echo('answers:notify:answer:subject', array(
+					$owner->name,
+					$question->title,
+				));
+			} else {
+				$subject = elgg_echo('answers:notify:question:subject', array(
+					$owner->name, 
+					$entity->title,
+				));
 			}
 
-			$link = sprintf(elgg_echo('answers:notify:body'),
-					elgg_echo("answers:$subtype"), $entity->getURL());
+			$link = elgg_echo('answers:notify:body', array(
+						elgg_echo("answers:$subtype"),
+						$entity->getURL()
+					));
 
-			$ret['body'] = $ret['subject'] . "\n\n" . $ret['body'] . "\n\n\n" . $link;
-			return $ret;
+			return $subject . "\n\n" . $descr . "\n\n\n" . $link;
 		}
 	}
 	return null;
 }
-
-function answers_notify_comment($object, $comment_text, $commenter) {
-	global $CONFIG;
-
-	// find interested users
-	// - question owner
-	// - if commenting on answer, answer owner
-	// - should these be added, too?
-	//   - other answers owners
-	//   - other commenters
-	//   - followers of the commenter
-	//   - group members (if group question)
-
-	$commenter_guid = $commenter->guid;
-	$interested_users = array();
-
-	$question = $object;
-	$answer = null;
-	$subtype = $object->getSubtype();
-	if ($subtype == 'answer') {
-		$answer = $object;
-		$question = get_question_for_answer($answer);
-	}
-
-	if ($question->owner_guid != $commenter_guid) {
-		$interested_users[] = $question->owner_guid;
-	}
-	if ($answer && $answer->owner_guid != $commenter_guid) {
-		$interested_users[] = $answer->owner_guid;
-	}
-
-	$interested_users = array_unique($interested_users);
-
-	$email_subject = sprintf(elgg_echo('answers:' . $subtype . ':comment:email:subject'), $question->title);
-	$email_body = sprintf(elgg_echo('answers:' . $subtype . ':comment:email:body'),
-					$commenter->name,
-					$question->title,
-					$comment_text,
-					$object->getURL(),
-					$commenter->getURL()
-	);
-	foreach ($interested_users as $user_guid) {
-		$user = get_user($user_guid);
-		notify_user($user_guid, $commenter_guid, $email_subject, $email_body);
-	}
-}
-
-function answers_can_edit_comment($comment) {
-	return ($comment->owner_guid == $_SESSION["guid"] || elgg_is_admin_logged_in());
-}
-

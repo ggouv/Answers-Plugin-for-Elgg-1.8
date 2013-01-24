@@ -8,7 +8,7 @@ $answer_id = (int) get_input('answer_id');
 
 // Let's see if we can get an entity with the specified GUID
 $answer = get_entity($answer_id);
-$question = get_question_for_answer($answer);
+$question = answers_get_question_for_answer($answer);
 if ($question && $answer) {
 	if ($question->getSubtype() == "question" && $question->canEdit()) {
 		$question->chosen_answer = $answer->getGUID();
