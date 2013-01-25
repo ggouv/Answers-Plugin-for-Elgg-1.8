@@ -141,7 +141,7 @@ HTML;
 	echo <<<HTML
 <div id="elgg-object-{$question->guid}" class="elgg-item-question">
 	$rating_block
-	<div class="question-content mts">
+	<div class="question-content clearfix mts">
 		<h3>$title_link</h3>
 		$content
 		$summary

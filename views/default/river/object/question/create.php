@@ -1,16 +1,36 @@
 <?php
+/**
+ * Add question river view
+ */
 
-$item = $vars['item'];
-$question = get_entity($item->object_guid);
-$user = get_entity($question->getOwnerGUID());
+$subject = $vars['item']->getSubjectEntity();
+$object = $vars['item']->getObjectEntity();
+$container = $object->getContainerEntity();
 
-$questionurl = "<a href=".$question->getURL().">".$question->title."</a>";
-$userurl = "<a href=".$user->getURL().">".$user->name."</a>";
-$excerpt = elgg_get_excerpt($question->description);
+$subject_link = elgg_view('output/url', array(
+	'href' => $subject->getURL(),
+	'text' => $subject->name,
+	'class' => 'elgg-river-subject',
+	'is_trusted' => true,
+));
 
-$summary = sprintf(elgg_echo("question:river:created"), $userurl, $questionurl);
+$object_link = elgg_view('output/url', array(
+	'href' => $object->getURL(),
+	'text' => $object->title,
+	'class' => 'elgg-river-object',
+	'is_trusted' => true,
+));
 
-$vars['item']->subject_guid = $user->getGUID();
+$group_link = elgg_view('output/url', array(
+	'href' => $container->getURL(),
+	'text' => $container->name,
+	'is_trusted' => true,
+));
+$group_string = elgg_echo('river:ingroup', array($group_link));
+
+$excerpt = strip_tags(elgg_get_excerpt($object->description, 100));
+
+$summary = elgg_echo("question:river:created", array($subject_link, $object_link, $group_string));
 
 echo elgg_view('river/elements/layout', array(
 	'item' => $item,

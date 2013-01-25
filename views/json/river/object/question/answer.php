@@ -5,19 +5,42 @@
 
 global $jsonexport;
 
-$item = $vars['item'];
-$answer = get_entity($item->object_guid);
-$question = get_entity($item->subject_guid);
-$user = get_entity($answer->getOwnerGUID());
+$subject = $vars['item']->getSubjectEntity();
+$object = $vars['item']->getObjectEntity();
+$question = get_entity($object->question_guid);
+$container = $object->getContainerEntity();
 
-$timestamp = elgg_view_friendly_time($item->getPostedTime());
-$questionurl = "<a href=".$question->getURL().">".$question->title."</a>";
-$userurl = "<a href=".$user->getURL().">".$user->name."</a>";
-$excerpt = elgg_get_excerpt($answer->description);
+$subject_link = elgg_view('output/url', array(
+	'href' => $subject->getURL(),
+	'text' => $subject->name,
+	'class' => 'elgg-river-subject',
+	'is_trusted' => true,
+));
 
-$summary = elgg_echo("question:river:answered", array($userurl, $questionurl));
+$object_link = elgg_view('output/url', array(
+	'href' => $object->getURL(),
+	'text' => elgg_echo('answers:river:answered'),
+	'class' => 'elgg-river-object',
+	'is_trusted' => true,
+));
 
-$vars['item']->subject_guid = $user->getGUID();
+$question_link = elgg_view('output/url', array(
+	'href' => $question->getURL(),
+	'text' => $question->title,
+	'class' => 'elgg-river-object',
+	'is_trusted' => true,
+));
+
+$group_link = elgg_view('output/url', array(
+	'href' => $container->getURL(),
+	'text' => $container->name,
+	'is_trusted' => true,
+));
+$group_string = elgg_echo('river:ingroup', array($group_link));
+
+$excerpt = strip_tags(elgg_get_excerpt($object->description, 100));
+
+$summary = elgg_echo("question:river:answered", array($subject_link, $object_link, $question_link, $group_string));
 
 $vars['item']->summary = $summary;
 $vars['item']->message = $excerpt;

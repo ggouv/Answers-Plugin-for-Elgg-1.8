@@ -47,13 +47,13 @@ function answers_init() {
 	// register actions. Les actions sont dans le dossier actions/answers. C'est mieux si on veut les overrider.
 	$action_path = "$root/actions/answers";
 	elgg_register_action("answers/question/save", "$action_path/question/save.php");
-
 	elgg_register_action("answers/answer/save", "$action_path/answer/save.php");
 	elgg_register_action("answer/edit", "$action_path/editanswer.php");
 	elgg_register_action("answers/delete", "$action_path/delete.php");
 	elgg_register_action("answer/choose", "$action_path/chooseanswer.php");
 	elgg_register_action("answer/like", "$action_path/like.php");
 	elgg_register_action("answer/dislike", "$action_path/dislike.php");
+	elgg_register_plugin_hook_handler('creating', 'river', 'answer_comment_river_create_hook');
 
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'answers_setup_entity_menu_items');
@@ -208,6 +208,14 @@ function answers_get_question_for_answer($answer) {
 			return $question;
 		}
 	}
+}
+
+
+function answer_comment_river_create_hook($hook, $type, $result, $params) {
+	if ($result['subtype'] == 'answer' && $result['action_type'] == 'comment') {
+		$result['view'] = 'river/annotation/answer/comment';
+	}
+	return $result;
 }
 
 

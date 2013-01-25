@@ -1,12 +1,11 @@
 <?php
 /**
- * Add question river view
+ * Add answer river view
  */
-
-global $jsonexport;
 
 $subject = $vars['item']->getSubjectEntity();
 $object = $vars['item']->getObjectEntity();
+$question = get_entity($object->question_guid);
 $container = $object->getContainerEntity();
 
 $subject_link = elgg_view('output/url', array(
@@ -18,7 +17,14 @@ $subject_link = elgg_view('output/url', array(
 
 $object_link = elgg_view('output/url', array(
 	'href' => $object->getURL(),
-	'text' => $object->title,
+	'text' => elgg_echo('answers:river:the_answer'),
+	'class' => 'elgg-river-object',
+	'is_trusted' => true,
+));
+
+$question_link = elgg_view('output/url', array(
+	'href' => $question->getURL(),
+	'text' => $question->title,
 	'class' => 'elgg-river-object',
 	'is_trusted' => true,
 ));
@@ -32,9 +38,10 @@ $group_string = elgg_echo('river:ingroup', array($group_link));
 
 $excerpt = strip_tags(elgg_get_excerpt($object->description, 100));
 
-$summary = elgg_echo("question:river:created", array($subject_link, $object_link, $group_string));
+$summary = elgg_echo("question:river:answer:comment", array($subject_link, $object_link, $question_link, $group_string));
 
-$vars['item']->summary = $summary;
-$vars['item']->message = $excerpt;
-
-$jsonexport['activity'][] = $vars['item'];
+echo elgg_view('river/elements/layout', array(
+	'item' => $vars['item'],
+	'summary' => $summary,
+	'message' => $excerpt,
+));

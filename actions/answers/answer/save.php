@@ -14,9 +14,11 @@ if (!$question) {
 	forward("answers/");
 }
 
+$user_guid = elgg_get_logged_in_user_guid();
+
 $container = get_entity($question->container_guid);
-if ($container instanceof ElggGroup && !can_write_to_container(0, $container->getGUID())) {
-	register_error(sprintf(elgg_echo("answers:answer:mustbeingroup"), $container->name));
+if ($container instanceof ElggGroup && !$container->canWriteToContainer($user_guid)) {
+	register_error(elgg_echo('answers:answer:mustbeingroup', array($container->name)));
 	forward($question->getURL());
 }
 
@@ -50,17 +52,16 @@ if (!add_entity_relationship($question->getGUID(), "answer", $answer->getGUID())
 }
 
 system_message(elgg_echo("answers:answer:posted"));
-add_to_river('river/object/question/answer', 'create', $answer->question_guid, $answer->getGUID());
+add_to_river('river/object/question/answer', 'create', $user_guid, $answer->getGUID());
 
 // Send response to original question asker if not already registered to receive notification
-$user = elgg_get_logged_in_user_entity();
-if ($question->owner_guid != $user->guid) {
+if ($question->owner_guid != $user_guid) {
 	$question_owner = $question->getOwnerEntity();
 
 	if ($container instanceof ElggGroup) {
 		$notify_guid = $container->guid;
 	} else {
-		$notify_guid = $user->guid;
+		$notify_guid = $user_guid;
 	}
 	// check if question owner has notification for this user
 	$send_response = true;
@@ -91,7 +92,7 @@ if ($question->owner_guid != $user->guid) {
 		global $CONFIG;
 		$subject = $CONFIG->register_objects['object']['answer'];
 		
-		notify_user($question_owner->guid, $user->guid, $subject, $msg);
+		notify_user($question_owner->guid, $user_guid, $subject, $msg);
 	}
 }
 

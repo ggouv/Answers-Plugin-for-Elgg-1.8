@@ -12,13 +12,13 @@ $question = answers_get_question_for_answer($answer);
 if ($question && $answer) {
 	if ($question->getSubtype() == "question" && $question->canEdit()) {
 		$question->chosen_answer = $answer->getGUID();
+		$user_guid = elgg_get_logged_in_user_guid();
 
 		system_message(elgg_echo("answers:answer:chosen"));
 		//add to river
-		add_to_river('river/object/question/choose', 'choose', $question->getGUID(), $answer->getGUID());
-		//add_to_river('river/object/question/choose', 'choose', $_SESSION['user']->guid, $question->getGUID());
+		add_to_river('river/object/question/choose', 'update', $user_guid, $answer->getGUID()); // @ManUtopiK prefer 'update' to correspond to elgg standard.
 	} else {
-		error_log("couldn't edit: " . $question->getSubtype() . ", " . $question->canEdit() . ", " . $answer->getGUID());
+		register_error(elgg_echo('answers:answer:notchosen'));
 	}
 } else {
 	register_error(elgg_echo("answers:notfound"));

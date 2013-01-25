@@ -40,7 +40,6 @@ $english = array(
 	'item:object:answer' => 'Answers',
 	'answers:answer:add' => "Answer this question",
 	'answers:answer:answer' => "Answer",
-	'answers:answer:mustbeingroup' => "You must be a member of %s to answer or comment on this question.",
 	'answers:questions:more' => "More questions",
 	'answers:questions:none' => "There are no questions here.",
 	'groups:enableanswers' => "Enable group questions",
@@ -68,12 +67,16 @@ $english = array(
 	/**
 	 * Answers river
 	 */
-	'question:river:created' => "%s asked %s",
-	'question:river:answered' => "%s answered the question %s",
-	'question:river:chosen' => "%s chose the best answer to the question %s",
+	'answers:river:answered' => "answered",
+	'answers:river:best_answer' => "the best answer",
+	'answers:river:the_answer' => "an answer",
+	'question:river:created' => "%s asked the question %s %s",
+	'question:river:answered' => "%s %s the question %s %s",
+	'question:river:answer:comment' => "%s commented %s of the question %s %s",
+	'question:river:chosen' => "%s chose %s to the question %s %s",
 	'question:river:updated' => "%s updated the question",
-	'question:river:comment:question' => "%s commented on the question %s",
-	'question:river:comment:answer' => "%s commented on an answer to a question",
+	'river:comment:object:question' => "%s commented the question %s",
+	'river:comment:object:answer' => "%s commented an answer to the question %s",
 	'answer:river:updated' => "%s updated an answer to the question",
 
 	/**
@@ -90,11 +93,13 @@ $english = array(
 	'answers:question:updated' => "Your question was successfully updated.",
 	'answers:answer:posted' => "Your answer was successfully posted.",
 	'answers:answer:updated' => "Your answer was successfully updated.",
+	'answers:answer:mustbeingroup' => "You must be a member of %s to answer or comment on this question.",
 	'answers:deleted' => "Deletion was successful.",
 	'answers:liked' => "You 'liked' an answer.",
 	'answers:disliked' => "You 'disliked' an answer.",
 	'answers:unliked' => "You 'unliked' an answer.",
 	'answers:answer:chosen' => "Your favorite answer was successfully chosen.",
+	'answers:answer:notchosen' => "Your must be owner of the question to choose favorite answer.",
 
 	/**
 	 * Error messages
@@ -138,7 +143,6 @@ Comment text:
 Link to comment:
 %s
 ",
-    'river:comment:object:default' => '%s commented on a question.'
 
 );
 					
