@@ -12,6 +12,8 @@ if (!$entity->canEdit()) {
 	forward();
 }
 
+elgg_load_library('answers:utilities');
+
 if (elgg_instanceof($entity, 'object', 'question')) {
 	$owner = $entity->getOwnerEntity();
 	$forward_url = 'answers/owner/' . $owner->username;

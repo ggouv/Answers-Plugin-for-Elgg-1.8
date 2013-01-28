@@ -4,7 +4,7 @@ elgg.provide('elgg.answers');
 elgg.answers.init = function() {
 
 	// ajaxified action for vote
-	$('.answer_like, .answer_dislike').live('click', function(e) {
+	$('.answer_like, .answer_dislike').die().live('click', function(e) {
 		var answer = $(this).parents('div[id*=elgg-object]'),
 			action = $(this).hasClass('answer_like') ? 'like' : 'dislike';
 

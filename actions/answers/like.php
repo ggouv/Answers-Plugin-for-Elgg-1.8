@@ -15,6 +15,8 @@ if ($entity = get_entity($entity_guid)) {
 		return true;
 	}
 
+	elgg_load_library('answers:utilities');
+
 	// check the actual user opinion
 	if (answers_does_user_like_answer($entity, $user_guid)) {
 		$action_result = answers_unlike($entity, $user_guid);
