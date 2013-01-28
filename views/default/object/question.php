@@ -88,7 +88,7 @@ if ($full === true) {
 	<div class="question-content mbl">
 		$question_info
 		$body
-		<div id="comments">
+		<div id="comments" class="elgg-comments">
 			$question_comments
 			$question_add_comment
 		</div>

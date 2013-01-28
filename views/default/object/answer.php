@@ -93,7 +93,7 @@ if ($full) {
 	<div class="answer-content mbl">
 		$body
 		$answer_info
-		<div id="answer-comment-$answer_guid">
+		<div id="answer-comment-$answer_guid" class="elgg-comments">
 			$answer_comments
 			$answer_add_comment
 		</div>
