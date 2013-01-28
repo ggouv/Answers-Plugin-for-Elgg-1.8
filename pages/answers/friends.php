@@ -13,21 +13,28 @@ elgg_push_breadcrumb($page_owner->name, "answers/owner/$page_owner->username");
 elgg_push_breadcrumb(elgg_echo('friends'));
 
 //set the title
-if ($page_owner == $_SESSION['user']) {
+if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
 	$title = elgg_echo('answers:friends');
 } else {
-	$title = sprintf(elgg_echo('answers:user:friends'), $page_owner->name);
+	$title = elgg_echo('answers:user:friends', array($page_owner->name));
 }
+
 elgg_register_title_button();
 // get the user's friends' questions
 $area2 .= list_user_friends_objects($page_owner->getGUID(), 'question', 10, false);
 
+// @todo - this is really ugly and doesn't work as intended. Looks like the developer
+// was trying to list all friend created questions instead of just questions in the
+// friends' containers. This wasn't done for the owner page.
+
 //display groupquestions
-$groups = elgg_get_entities_from_relationship(array('type' => 'group',
-		'relationship' => 'member',
-		'relationship_guid' => $page_owner->guid,
-		'inverse_relationship' => false,
-		'full_view' => false,));
+$groups = elgg_get_entities_from_relationship(array(
+	'type' => 'group',
+	'relationship' => 'member',
+	'relationship_guid' => $page_owner->guid,
+	'inverse_relationship' => false,
+	'full_view' => false,
+));
 
 foreach ($groups as $group){
 	$vars['entity'] = $group;
@@ -58,9 +65,10 @@ foreach ($groups as $group){
 	}
 }
 
-//$body = elgg_view_layout("two_column_left_sidebar", '', $area2);
+$body = elgg_view_layout("content", array(
+	'content' => $area2,
+	'title' => $title,
+	'filter_context' => 'friends',
+));
 
-$body = elgg_view_layout("content", array('content' => $area2, 'title' => $title, 'filter_context' => 'friends'));
-
-echo elgg_view_page(elgg_echo('answers:everyone'), $body);
-//page_draw(elgg_echo('answers:everyone'), $body);
+echo elgg_view_page($title, $body);
