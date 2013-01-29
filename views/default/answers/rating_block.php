@@ -41,7 +41,7 @@ if ($subtype == 'question') {
 		if ($chosen) $class = ' chosen';
 		$chosen_view = elgg_view('output/url', array(
 			'text' => '<div class="gwf">œ</div>',
-			'href' => elgg_get_site_url() . 'action/answer/choose?answer_id=' . $entity->getGUID(),
+			'href' => elgg_get_site_url() . 'action/answers/choose?answer_id=' . $entity->getGUID(),
 			'class' => "choose tooltip w t$class",
 			'is_action' => true,
 			'is_trusted' => true,

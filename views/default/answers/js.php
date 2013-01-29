@@ -8,7 +8,7 @@ elgg.answers.init = function() {
 		var answer = $(this).parents('div[id*=elgg-object]'),
 			action = $(this).hasClass('answer_like') ? 'like' : 'dislike';
 
-		elgg.action('answer/'+action, {
+		elgg.action('answers/'+action, {
 			data: {
 				answer_guid: answer.attr('id').replace(/elgg-object-/, ''),
 			},
