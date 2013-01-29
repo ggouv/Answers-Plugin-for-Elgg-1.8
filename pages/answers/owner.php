@@ -32,13 +32,13 @@ $vars = array(
 );
 
 if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
-	$vars['filter_context'] = 'mine';
+	$vars['filter'] = elgg_view('answers/search_and_submit_question');
+	$vars['filter'].= elgg_view('answers/filter_questions', array(
+		'sort' => $sort
+	));
+} else {
+	$vars['filter_context'] = '';
 }
-
-$vars['filter'] = elgg_view('answers/search_and_submit_question');
-$vars['filter'].= elgg_view('answers/filter_questions', array(
-	'sort' => $sort
-));
 
 $body = elgg_view_layout('content', $vars);
 
