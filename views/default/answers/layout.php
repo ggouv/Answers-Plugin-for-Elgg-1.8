@@ -36,7 +36,7 @@ if ($count == 0) {
 	$answers_title = count($answers) .' ' . elgg_echo('answers:answers');
 }
 
-$content .= '<div class="question-answers">' . elgg_view('answers/filter_answers', array(
+$content .= '<div id="question-answers">' . elgg_view('answers/filter_answers', array(
 	'sort' => $sort,
 	'title' => $answers_title
 ));

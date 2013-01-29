@@ -114,6 +114,11 @@ HTML;
 		$answers_text = elgg_echo('answers:answer');
 	}
 	
+	$answers_link = elgg_view('output/url', array(
+		'text' => "<div>$num_answers</div>$answers_text",
+		'href' => $question->getURL() . '#question-answers',
+	));
+	
 	$rating_block = <<<HTML
 <div class="rating-block float center">
 	<div class="briefscore">
@@ -121,8 +126,7 @@ HTML;
 		$score_text
 	</div>
 	<div class="answers">
-		<div>$num_answers</div>
-		$answers_text
+		$answers_link
 	</div>
 </div>
 HTML;
