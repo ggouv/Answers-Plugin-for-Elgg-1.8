@@ -57,6 +57,9 @@ function answers_init() {
 	elgg_register_plugin_hook_handler('creating', 'river', 'answer_comment_river_create_hook');
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'answers_setup_entity_menu_items');
+
+	// remove likes plugin integration for questions and answers
+	elgg_register_plugin_hook_handler('register', 'menu:river', 'answers_river_menu_setup');
 }
 
 /**
@@ -265,4 +268,23 @@ function answers_notify_message($hook, $type, $result, $params) {
 		}
 	}
 	return null;
+}
+
+/**
+ * Loop over menu items and remove the likes item for answers and questions
+ */
+function answers_river_menu_setup($hook, $type, $menu, $params) {
+	$item = $params['item'];
+	$object = $item->getObjectEntity();
+	if (elgg_instanceof($object, 'object', 'answer') ||
+		elgg_instanceof($object, 'object', 'question')) {
+		
+		foreach ($menu as $index => $menu_item) {
+			$name = $menu_item->getName();
+			if ($name == 'likes') {
+				unset($menu[$index]);
+			}
+		}
+	}
+	return $menu;
 }
