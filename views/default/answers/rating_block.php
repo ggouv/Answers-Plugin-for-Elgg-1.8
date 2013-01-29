@@ -15,7 +15,7 @@ if ($entity->getOwnerGUID() != $user_guid) {
 		'text' => '<div class="gwf">í</div>',
 		'href' => '#',
 		'is_trusted' => true,
-		'class' => "t answer_like$liked",
+		'class' => "t tooltip w answer_like$liked",
 		'title' => elgg_echo('answers:vote:tooltip:like'),
 	));
 
@@ -24,7 +24,7 @@ if ($entity->getOwnerGUID() != $user_guid) {
 		'text' => '<div class="gwf mbm">ì</div>',
 		'href' => '#',
 		'is_trusted' => true,
-		'class' => "t answer_dislike$disliked",
+		'class' => "t tooltip w answer_dislike$disliked",
 		'title' => elgg_echo('answers:vote:tooltip:dislike'),
 	));
 }
