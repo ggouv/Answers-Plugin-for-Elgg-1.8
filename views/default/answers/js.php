@@ -10,7 +10,7 @@ elgg.answers.init = function() {
 
 		elgg.action('answers/'+action, {
 			data: {
-				answer_guid: answer.attr('id').replace(/elgg-object-/, ''),
+				answer_guid: answer.attr('id').replace(/elgg-object-/, '')
 			},
 			success: function(json) {
 				if (json.status == 0) {
@@ -31,7 +31,7 @@ elgg.answers.init = function() {
 
 					// add new value
 					for (var i = 1; i < Math.abs(diff)+1; i++) {
-						answer.find('.score')[method]($('<div>', {class: i == Math.abs(diff) ? 'pvm new' : 'pvm'}).text(oldVal + i*c));
+						answer.find('.score')[method]($('<div>', {'class': i == Math.abs(diff) ? 'pvm new' : 'pvm'}).text(oldVal + i*c));
 					}
 					
 					// animate
@@ -97,7 +97,8 @@ elgg.answers.init = function() {
 			$('.elgg-menu-filter-default, .elgg-list-entity').css('opacity', 0).fadeTo('slow', 1);
 		}
 	});
-}
+};
+
 elgg.register_hook_handler('init', 'system', elgg.answers.init);
 
 
@@ -119,4 +120,4 @@ elgg.answers.textCounter = function(textarea, status, limit) {
 	} else {
 		status.parent().css("color", "");
 	}
-}
+};
