@@ -84,6 +84,7 @@ if ($full) {
 	));
 
 	if (elgg_is_logged_in()) {
+		$answer_edit_form = elgg_view_form('answers/answer/edit', array('id' => 'edit-answer-'.$answer_guid, 'class' => 'hidden'), $vars);
 		$answer_add_comment = elgg_view('answers/comment_toggle', $vars);
 	}
 		
@@ -93,6 +94,7 @@ if ($full) {
 	<div class="answer-content mbl">
 		$body
 		$answer_info
+		$answer_edit_form
 		<div id="answer-comment-$answer_guid" class="elgg-comments">
 			$answer_comments
 			$answer_add_comment

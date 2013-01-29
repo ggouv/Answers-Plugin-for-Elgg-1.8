@@ -53,6 +53,7 @@ $english = array(
 	'answers:answer:tooltip:bestanswer' => "This answer was chosen as best answer by question's owner",
 	'answers:question:new' => "New question",
 	'answers:answer:new' => "New answer",
+	'answers:answer:edit' => "Edit answer",
 	'answers:comment:comment' => "Add Comment",
 	'answers:comment:save' => "Post",
 	'answers:score:one' => "vote",

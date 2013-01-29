@@ -37,7 +37,7 @@ function answers_init() {
 	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'answers_notify_message');
 
 	// support group questions/answers
-	elgg_extend_view('groups/tool_latest', 'answers/group_module');	
+	elgg_extend_view('groups/tool_latest', 'answers/group_module');
 	add_group_tool_option('answers', elgg_echo('groups:enableanswers'), true);
 
 	// register questions and answers for search
@@ -48,13 +48,13 @@ function answers_init() {
 	$action_path = "$root/actions/answers";
 	elgg_register_action("answers/question/save", "$action_path/question/save.php");
 	elgg_register_action("answers/answer/save", "$action_path/answer/save.php");
-	elgg_register_action("answer/edit", "$action_path/editanswer.php");
+	elgg_register_action("answers/answer/edit", "$action_path/editanswer.php");
 	elgg_register_action("answers/delete", "$action_path/delete.php");
-	elgg_register_action("answer/choose", "$action_path/chooseanswer.php");
-	elgg_register_action("answer/like", "$action_path/like.php");
-	elgg_register_action("answer/dislike", "$action_path/dislike.php");
-	elgg_register_plugin_hook_handler('creating', 'river', 'answer_comment_river_create_hook');
+	elgg_register_action("answers/choose", "$action_path/chooseanswer.php");
+	elgg_register_action("answers/like", "$action_path/like.php");
+	elgg_register_action("answers/dislike", "$action_path/dislike.php");
 
+	elgg_register_plugin_hook_handler('creating', 'river', 'answer_comment_river_create_hook');
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'answers_owner_block_menu');
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'answers_setup_entity_menu_items');
 }
@@ -167,6 +167,18 @@ function answers_setup_entity_menu_items($hook, $type, $menu, $params) {
 				unset($menu[$index]);
 			}
 		}
+		
+		// rewrite edit menu
+		$options = array(
+			'name' => 'edit',
+			'text' => 'e',
+			'title' => elgg_echo('edit:this'),
+			'class' => 'gwf tooltip s t',
+			'rel' => 'toggle',
+			'href' => "#edit-answer-{$params['entity']->guid}",
+			'priority' => 200,
+		);
+		$menu[] = ElggMenuItem::factory($options);
 	}
 	
 	return $menu;
