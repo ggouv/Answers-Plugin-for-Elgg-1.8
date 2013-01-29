@@ -73,7 +73,7 @@ elgg.answers.init = function() {
 				if (search_input.length > 3) { // @todo check why need to do it again ?
 					elgg.post('ajax/view/answers/search', {
 						data: {
-							group:elgg.get_page_owner_guid(),
+							owner: elgg.get_page_owner_guid(),
 							keyword: $("#answers-textarea").val()
 						},
 						beforeSend:  function() {

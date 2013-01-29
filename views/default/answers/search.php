@@ -3,10 +3,10 @@
 $keyword = get_input('keyword', 'false');
 
 if ( $keyword != 'false' ) {
-	$group_guid = (int)get_input('group', 'false');
+	$owner_guid = (int)get_input('owner', 'false');
 	
-	if ( $group_guid ) {
-
+	if ( $owner_guid ) {
+		$owner = get_entity($owner_guid);
 		$db_prefix = elgg_get_config('dbprefix');
 		
 		$likes = $keys = array();
@@ -23,9 +23,10 @@ if ( $keyword != 'false' ) {
 			$params = array(
 				'type' => 'object',
 				'subtype' => 'question',
-				'container_guid' => $group_guid,
 				'limit' => 0
 			);
+			$container_or_owner = elgg_instanceof($owner, 'group') ? 'container_guid' : 'owner_guid';
+			$params[$container_or_owner] = $owner_guid;
 		
 			$params['wheres'] = array('(' . implode(' OR ', $likes) . ')');
 			$params['joins'] = array("JOIN {$db_prefix}objects_entity oe ON e.guid = oe.guid");
@@ -50,8 +51,7 @@ if ( $keyword != 'false' ) {
 			}
 		}
 		
-		$group = get_entity($group_guid);
-		if ($group->canWritetoContainer()) {
+		if ($owner->canWritetoContainer()) {
 			if ($content) {
 				$html = '<span>' . elgg_echo('answers:search:submit_and_content') . '</span>';
 			} else {
@@ -59,7 +59,7 @@ if ( $keyword != 'false' ) {
 			}
 			
 			$html_keyword = htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8');
-			$html .= "<a class='elgg-button elgg-button-action' href='" . elgg_get_site_url() . "answers/add/{$group_guid}/?search={$html_keyword}'>" . elgg_echo('answers:add') . '</a>';
+			$html .= "<a class='elgg-button elgg-button-action' href='" . elgg_get_site_url() . "answers/add/{$owner_guid}/?search={$html_keyword}'>" . elgg_echo('answers:add') . '</a>';
 			echo $html . $content;
 		} else {
 			if ($content) {

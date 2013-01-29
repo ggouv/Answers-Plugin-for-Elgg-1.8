@@ -14,7 +14,6 @@ $area2 = elgg_list_entities(array(
 ));
 $containerEntity = get_entity($page_owner->container_guid );
 
-elgg_register_title_button();
 $body = elgg_view_layout("content", array('content' => $area2, 'title' => elgg_echo('answers:everyone')));
 
 echo elgg_view_page(elgg_echo('answers:everyone'), $body);

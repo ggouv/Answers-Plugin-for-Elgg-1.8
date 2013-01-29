@@ -232,11 +232,14 @@ function answers_get_sorted_question_answers($question, $sort = 'votes') {
 }
 
 function answers_get_sorted_questions($owner_guid, $sort = 'newest') {
-	$unsorted_questions = elgg_get_entities(array(
+	$owner = get_entity($owner_guid);
+	$params = array(
 		'type' => 'object',
 		'subtype' => 'question',
-		'container_guid' => $owner_guid,
-	));
+	);
+	$container_or_owner = elgg_instanceof($owner, 'group') ? 'container_guid' : 'owner_guid';
+	$params[$container_or_owner] = $owner_guid;
+	$unsorted_questions = elgg_get_entities($params);
 
 	if ($sort != 'newest') { // elgg_get_entities already filter by dates. Doesn't need array_multisort.
 		$unsorted_ratings = array();

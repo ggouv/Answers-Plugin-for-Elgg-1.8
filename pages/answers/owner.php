@@ -35,12 +35,11 @@ if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
 	$vars['filter_context'] = 'mine';
 }
 
-if ($page_owner->type == 'group') {
-	$vars['filter'] = elgg_view('answers/search_and_submit_question');
-	$vars['filter'].= elgg_view('answers/filter_questions', array(
-		'sort' => $sort
-	));
-}
+$vars['filter'] = elgg_view('answers/search_and_submit_question');
+$vars['filter'].= elgg_view('answers/filter_questions', array(
+	'sort' => $sort
+));
+
 $body = elgg_view_layout('content', $vars);
 
 echo elgg_view_page($title, $body);

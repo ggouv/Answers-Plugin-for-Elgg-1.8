@@ -44,7 +44,7 @@ $question->container_guid = $container_guid;
 if ($question->save()) {
 	elgg_clear_sticky_form('question');
 	system_message(elgg_echo("answers:question:posted"));
-	global $fb; $fb->info($new);
+	
 	if ($new) { // only add river item when this is a new question
 		add_to_river('river/object/question/create', 'create', $user_guid, $question->guid);
 	}
