@@ -11,7 +11,7 @@ if ($entity = get_entity($entity_guid)) {
 	
 	// check if the user voted to an owned entity 
 	if ($entity->getOwnerGUID() == $user_guid) {
-		register_error(elgg_echo('answers:liked:failure:owner'));
+		register_error(elgg_echo('answers:vote:failure:owner'));
 		return true;
 	}
 
@@ -31,7 +31,7 @@ if ($entity = get_entity($entity_guid)) {
 			'like_dislike' => answers_get_like_dislike($entity, $user_guid)
 		));
 	} else {
-		register_error(elgg_echo('answers:liked:failure'));
+		register_error(elgg_echo('answers:vote:failure'));
 	}
 } else {
 	register_error(elgg_echo('answers:notfound'));

@@ -47,7 +47,7 @@ elgg.answers.init = function() {
 					if (json.output.like_dislike == 'dislike') answer.find('.answer_dislike').addClass('disliked');
 				}
 			}, error: function() {
-				elgg.register_error(elgg.echo('answers:liked:failure'));
+				elgg.register_error(elgg.echo('answers:vote:failure'));
 			}
 		});
 		e.preventDefault();

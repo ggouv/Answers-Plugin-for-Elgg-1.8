@@ -10,8 +10,8 @@ $answer_text = get_input('answer_text');
 $question = get_entity($question_id);
 
 if (!$question) {
-	register_error(elgg_echo("answers:question:notfound"));
-	forward("answers/");
+	register_error(elgg_echo('answers:error'));
+	forward(REFERER);
 }
 
 $user_guid = elgg_get_logged_in_user_guid();
@@ -42,12 +42,12 @@ if ($container instanceof ElggGroup) {
 $answer->description = $answer_text;
 
 if (!$answer->save()) {
-	register_error(elgg_echo("answers:answer:saveerror"));
+	register_error(elgg_echo('answers:answer:failure'));
 	forward($question->getURL());
 }
 
 if (!add_entity_relationship($question->getGUID(), "answer", $answer->getGUID())) {
-	register_error(elgg_echo("answers:answer:attacherror"));
+	register_error(elgg_echo('answers:answer:failure'));
 	forward($question->getURL());
 }
 

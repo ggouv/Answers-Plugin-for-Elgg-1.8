@@ -9,7 +9,7 @@ $question_guid = get_input('question_guid');
 $question = get_entity($question_guid);
 
 if (!elgg_instanceof($question, 'object', 'question') || !$question->canEdit()) {
-	register_error(elgg_echo('answers:unknown_question'));
+	register_error(elgg_echo('answers:notfound'));
 	forward(REFERRER);
 }
 

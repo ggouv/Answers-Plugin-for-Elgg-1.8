@@ -20,13 +20,13 @@ $filter_context = elgg_extract('sort', $vars, 'all');
 // generate a list of default tabs
 $tabs = array(
 	'votes' => array(
-		'text' => elgg_echo('votes'),
+		'text' => elgg_echo('answers:votes'),
 		'href' => "?sort=votes",
 		'selected' => ($filter_context == 'votes'),
 		'priority' => 200,
 	),
 	'oldest' => array(
-		'text' => elgg_echo('oldest'),
+		'text' => elgg_echo('answers:oldest'),
 		'href' => "?sort=oldest",
 		'selected' => ($filter_context == 'oldest'),
 		'priority' => 300,

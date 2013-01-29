@@ -12,7 +12,7 @@ $content = elgg_view_form('answers/question/save', array(), $vars);
 $body = elgg_view_layout('content', array(
 	'content' => $content,
 	'filter' => '',
-	'title' => elgg_echo('answers:question:add')
+	'title' => $title
 ));
 
-echo elgg_view_page(elgg_echo('answers:question:add'), $body);
+echo elgg_view_page($title, $body);

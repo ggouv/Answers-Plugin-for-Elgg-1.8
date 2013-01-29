@@ -18,25 +18,25 @@ $filter_context = elgg_extract('sort', $vars, 'newest');
 // generate a list of default tabs
 $tabs = array(
 	'newest' => array(
-		'text' => elgg_echo('newest'),
+		'text' => elgg_echo('answers:newest'),
 		'href' => "?sort=newest",
 		'selected' => ($filter_context == 'newest'),
 		'priority' => 200,
 	),
 	'votes' => array(
-		'text' => elgg_echo('votes'),
+		'text' => elgg_echo('answers:votes'),
 		'href' => "?sort=votes",
 		'selected' => ($filter_context == 'votes'),
 		'priority' => 200,
 	),
 	'activity' => array(
-		'text' => elgg_echo('activity'),
+		'text' => elgg_echo('answers:activity'),
 		'href' => "?sort=activity",
 		'selected' => ($filter_context == 'activity'),
 		'priority' => 300,
 	),
 	'unanswered' => array(
-		'text' => elgg_echo('unanswered'),
+		'text' => elgg_echo('answers:unanswered'),
 		'href' => "?sort=unanswered",
 		'selected' => ($filter_context == 'unanswered'),
 		'priority' => 400,
