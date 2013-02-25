@@ -75,8 +75,8 @@ if ($full) {
 	$params = $params + $vars;
 	$summary = elgg_view('object/elements/summary', $params);
 
-	$answer_info = elgg_view_image_block($owner_icon, $summary, array('class' => 'mvs'));
-	
+	$answer_info = elgg_view_image_block($owner_icon, $summary, array('class' => 'mts'));
+
 	$answer_comments = elgg_list_annotations(array(
 		'guid' => $answer_guid,
 		'annotation_name' => 'generic_comment',
@@ -87,12 +87,14 @@ if ($full) {
 		$answer_edit_form = elgg_view_form('answers/answer/edit', array('id' => 'edit-answer-'.$answer_guid, 'class' => 'hidden'), $vars);
 		$answer_add_comment = elgg_view('answers/comment_toggle', $vars);
 	}
-		
+
 	echo <<<HTML
 <div id="elgg-object-{$answer->guid}" class="elgg-item-answer">
 	$rating_block
 	<div class="answer-content mbl">
-		$body
+		<div class="answer-output">
+			$body
+		</div>
 		$answer_info
 		$answer_edit_form
 		<div id="answer-comment-$answer_guid" class="elgg-comments">

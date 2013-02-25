@@ -16,10 +16,10 @@ if ($answer && elgg_is_logged_in()) {
 		echo '</div>';
 		echo '<div class="elgg-foot">';
 		echo elgg_view('input/hidden', array(
-			'name' => 'question_guid',
+			'name' => 'answer_guid',
 			'value' => $answer->getGUID()
 		));
-		echo elgg_view('input/submit', array('value' => elgg_echo("save")));
+		echo elgg_view('input/submit', array('value' => elgg_echo("save"), 'class' => 'elgg-button-submit answer-edit-submit'));
 		echo '</div>';
 	}
 }

@@ -4,10 +4,10 @@
  */
 
 // Get input data
-$guid = (int) get_input('answer_id');
+$guid = (int) get_input('answer_guid');
 
 // modified to work with ckeditor
-$answer_text = get_input("answer_text{$guid}");
+$answer_text = get_input("answer_text");
 
 // Make sure we actually have permission to edit
 $answer = get_entity($guid);
@@ -16,7 +16,7 @@ if ($answer && $answer->getSubtype() == "answer" && $answer->canEdit()) {
 		register_error(elgg_echo("answers:answer:blank"));
 		forward($answer->getURL());
 	}
-	
+
 	$answer->description = $answer_text;
 
 	if (!$answer->save()) {

@@ -1,9 +1,11 @@
 .question-content, .answer-content {
 	margin-left: 60px;
 }
+.question-view .elgg-comments {
+	margin-top: 5px;
+}
 .question-view .elgg-image-block:after {
 	content: "";
-	display: inline-block;
 }
 .rating-block, .rating-block > * {
 	width: 50px;
@@ -140,8 +142,8 @@
 .question-view .elgg-item-answer {
 	border-bottom: 1px solid #CCC;
 }
-.answer-content .elgg-image-block {
-	border-bottom: 1px dotted #CCC;
+.answer-content .elgg-comments {
+	border-top: 1px dotted #CCC;
 }
 .answer-content .elgg-image-block .elgg-body {
 	padding-top: 7px;
