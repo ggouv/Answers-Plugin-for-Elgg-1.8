@@ -62,11 +62,11 @@ $french = array(
 	'answers:river:best_answer' => "la meilleure réponse",
 	'answers:river:the_answer' => "cette réponse",
 	'river:create:object:question' => "%s a posé la question %s",
-	'question:river:answered' => "%s %s la question %s %s",
-	'question:river:answer:comment' => "%s commenté %s à la question %s %s",
+	'question:river:answered' => "%s a %s à la question %s %s",
+	'question:river:answer:comment' => "%s a commenté %s à la question %s %s",
 	'question:river:chosen' => "%s a choisi %s à la question %s %s",
-	'river:comment:object:question' => "%s commenté la question %s",
-	'river:comment:object:answer' => "%s commenté une réponse à la question %s",
+	'river:comment:object:question' => "%s a commenté la question %s",
+	'river:comment:object:answer' => "%s a commenté une réponse à la question %s",
 
 	/**
 	 * Widget
