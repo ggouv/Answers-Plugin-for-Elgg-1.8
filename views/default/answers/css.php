@@ -1,9 +1,6 @@
 .question-content, .answer-content {
 	margin-left: 60px;
 }
-.question-view .elgg-comments {
-	margin-top: 5px;
-}
 .question-view .elgg-image-block:after {
 	content: "";
 }

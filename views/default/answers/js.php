@@ -33,14 +33,14 @@ elgg.answers.init = function() {
 					for (var i = 1; i < Math.abs(diff)+1; i++) {
 						answer.find('.score')[method]($('<div>', {'class': i == Math.abs(diff) ? 'pvm new' : 'pvm'}).text(oldVal + i*c));
 					}
-					
+
 					// animate
 					var firstDiv = answer.find('.score div:first-child').css({marginTop: h0});
 					if (method == 'prepend') h = 0;
 					firstDiv.animate({marginTop: -h*Math.abs(diff)}, 500, function() {
 						answer.find('.score div').not('.new').remove().add('.score div').removeClass('new');
 					});
-					
+
 					//add class
 					answer.find('.answer_like, .answer_dislike').removeClass('liked disliked');
 					if (json.output.like_dislike == 'like') answer.find('.answer_like').addClass('liked');
@@ -53,7 +53,7 @@ elgg.answers.init = function() {
 		e.preventDefault();
 		return false;
 	});
-	
+
 	// live search
 	var timeout;
 	$("#answers-textarea").keypress(function(e) {
@@ -67,7 +67,7 @@ elgg.answers.init = function() {
 				clearTimeout(timeout);
 				timeout = null;
 			}
-			
+
 			timeout = setTimeout(function() {
 				search_input = $("#answers-textarea").val();
 				if (search_input.length > 3) { // @todo check why need to do it again ?
@@ -81,7 +81,7 @@ elgg.answers.init = function() {
 						},
 						success: function(response) {
 							clearTimeout(timeout);
-							$('.elgg-menu-filter-default, .elgg-list-entity').hide();
+							$('.elgg-page .elgg-menu-filter-default, .elgg-list-entity').hide();
 							if ( search_container.is(':hidden') ) {
 								search_container.css('opacity', 0).html(response).fadeTo('slow', 1);
 							} else {
@@ -94,7 +94,7 @@ elgg.answers.init = function() {
 			}, 500);
 		} else if ( $('.elgg-list-entity').css('opacity') != '1' || $('.elgg-list-entity').is(":hidden") ) {
 			search_container.hide().html('');
-			$('.elgg-menu-filter-default, .elgg-list-entity').css('opacity', 0).fadeTo('slow', 1);
+			$('.elgg-page .elgg-menu-filter-default, .elgg-list-entity').css('opacity', 0).fadeTo('slow', 1);
 		}
 	});
 };

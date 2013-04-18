@@ -12,7 +12,7 @@ $score = answers_overall_rating($entity);
 if ($entity->getOwnerGUID() != $user_guid) {
 	$liked = answers_does_user_like_answer($entity, $user_guid) == 'like' ? ' liked' : '';
 	$up = elgg_view('output/url', array(
-		'text' => '<div class="gwf">í</div>',
+		'text' => '<div class="gwf">↑</div>',
 		'href' => '#',
 		'is_trusted' => true,
 		'class' => "t tooltip w answer_like$liked",
@@ -21,7 +21,7 @@ if ($entity->getOwnerGUID() != $user_guid) {
 
 	$disliked = answers_does_user_dislike_answer($entity, $user_guid) == 'dislike' ? ' disliked' : '';
 	$down = elgg_view('output/url', array(
-		'text' => '<div class="gwf mbm">ì</div>',
+		'text' => '<div class="gwf mbm">↓</div>',
 		'href' => '#',
 		'is_trusted' => true,
 		'class' => "t tooltip w answer_dislike$disliked",
@@ -34,7 +34,7 @@ if ($subtype == 'question') {
 	// here code to favorite question. Usefull ? Todo ?
 } else if ($subtype == 'answer') {
 	$question = answers_get_question_for_answer($entity);
-	
+
 	if ($question->chosen_answer == $entity->getGUID()) {
 		$chosen = true;
 		$chosen_view = '<div class="choose chosen tooltip w t" title="' . elgg_echo('answers:answer:tooltip:bestanswer') . '"><div class="gwf mtm">œ</div></div>';
@@ -42,7 +42,7 @@ if ($subtype == 'question') {
 	if ($question->getOwnerGUID() == $user_guid) {
 		if ($chosen) $class = ' chosen';
 		$chosen_view = elgg_view('output/url', array(
-			'text' => '<div class="gwf">œ</div>',
+			'text' => '<div class="gwf">&#10004;</div>',
 			'href' => elgg_get_site_url() . 'action/answers/choose?answer_id=' . $entity->getGUID(),
 			'class' => "choose tooltip w t$class",
 			'is_action' => true,

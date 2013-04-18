@@ -13,7 +13,7 @@ function answers_init() {
 	// register a library of helper functions
 	$root = dirname(__FILE__);
 	elgg_register_library('answers:utilities', "$root/lib/answers.php");
-	
+
 	// Add a menu item to the main site menu
 	$item = new ElggMenuItem('answers', elgg_echo('answers:questions'), 'answers/all');
 	elgg_register_menu_item('site', $item);
@@ -21,7 +21,7 @@ function answers_init() {
 	// Extend css and js
 	elgg_extend_view('css/elgg', 'answers/css');
 	elgg_extend_view('js/elgg', 'answers/js');
-	
+
 	// live search
 	elgg_register_ajax_view('answers/search');
 
@@ -43,7 +43,7 @@ function answers_init() {
 	// register questions and answers for search
 	elgg_register_entity_type('object', 'question'); // on enregistre les objets que l'on veux pouvoir trouver par la recherche ou voir dans les colonnes du deck.
 	elgg_register_entity_type('object', 'answer');
-	
+
 	// register actions. Les actions sont dans le dossier actions/answers. C'est mieux si on veut les overrider.
 	$action_path = "$root/actions/answers";
 	elgg_register_action("answers/question/save", "$action_path/question/save.php");
@@ -81,11 +81,11 @@ function answers_init() {
 function answers_page_handler($page) {
 
 	elgg_load_library('answers:utilities');
-	
+
 	if (!isset($page[0])) {
 		$page[0] = 'all';
 	}
-	
+
 	elgg_push_breadcrumb(elgg_echo('answers'), 'answers/all');
 
 	$pages = dirname(__FILE__) . '/pages/answers';
@@ -129,7 +129,7 @@ function answers_page_handler($page) {
 
 /**
  * Add a menu item to an ownerblock
- * 
+ *
  * @param string $hook
  * @param string $type
  * @param array  $return
@@ -170,11 +170,11 @@ function answers_setup_entity_menu_items($hook, $type, $menu, $params) {
 				unset($menu[$index]);
 			}
 		}
-		
+
 		// rewrite edit menu
 		$options = array(
 			'name' => 'edit',
-			'text' => 'e',
+			'text' => '&#9998;', // unicode 270E
 			'title' => elgg_echo('edit:this'),
 			'class' => 'gwf tooltip s t',
 			'rel' => 'toggle',
@@ -183,7 +183,7 @@ function answers_setup_entity_menu_items($hook, $type, $menu, $params) {
 		);
 		$menu[] = ElggMenuItem::factory($options);
 	}
-	
+
 	return $menu;
 }
 
@@ -254,7 +254,7 @@ function answers_notify_message($hook, $type, $result, $params) {
 				));
 			} else {
 				$subject = elgg_echo('answers:notify:question:subject', array(
-					$owner->name, 
+					$owner->name,
 					$entity->title,
 				));
 			}
@@ -278,7 +278,7 @@ function answers_river_menu_setup($hook, $type, $menu, $params) {
 	$object = $item->getObjectEntity();
 	if (elgg_instanceof($object, 'object', 'answer') ||
 		elgg_instanceof($object, 'object', 'question')) {
-		
+
 		foreach ($menu as $index => $menu_item) {
 			$name = $menu_item->getName();
 			if ($name == 'likes') {
