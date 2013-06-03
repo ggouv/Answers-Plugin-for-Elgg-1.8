@@ -4,7 +4,7 @@
  */
 
 $french = array(
-	
+
 	/**
 	 * Menu items and titles
 	 */
@@ -38,8 +38,8 @@ $french = array(
 	'answers:activity' => "Plus actives",
 	'answers:unanswered' =>"Non répondues",
 	'answers:oldest' => "Plus anciennes",
-	
-	
+
+
 	/**
 	 * Forms
 	 */
@@ -53,8 +53,8 @@ $french = array(
 	'answers:search:submit_and_content' => "Regardez d'abord dans les résultats suivant si la question n'a pas déjà été posée, si non, vous pouvez ",
 	'answers:search:submit_no_content' => "Aucune question ne correspond à votre recherche. Vous pouvez ",
 	'answers:search:no_content' => "Aucune question ne correspond à votre recherche.",
-	
-	
+
+
 	/**
 	 * Answers river
 	 */
@@ -77,12 +77,13 @@ $french = array(
 
 	/**
 	 * Status messages
-	 */	
+	 */
 	'answers:question:posted' => "Votre question a bien été publiée.",
 	'answers:answer:posted' => "Votre réponse a bien été publiée.",
 	'answers:answer:updated' => "Votre réponse a été mise à jour.",
 	'answers:answer:mustbeingroup' => "Vous devez être membre de %s pour répondre ou commenter cette question.",
-	'answers:deleted' => "La question a été supprimée.",
+	'answers:question:deleted' => "La question a été supprimée.",
+	'answers:answer:deleted' => "La réponse a été supprimée.",
 	'answers:answer:chosen' => "Votre choix a été enregistré.",
 	'answers:answer:notchosen' => "Vous devez être le propriétaire de la question pour choisir une réponse.",
 
@@ -98,13 +99,13 @@ $french = array(
 	'answers:notdeleted' => "Désolé, la suppression a échouée.",
 	'answers:vote:failure' => "Désolé, votre vote n'a pas pu être pris en compte.",
 	'answers:vote:failure:owner' => "Désolé, vous ne pouvez pas voter pour vous.",
-	
+
 	/**
 	 * Email Notifications
 	 */
 	'answers:notify:question:subject' => "%s demande \"%s\"",
 	'answers:notify:answer:subject' => "%s a répondu à la question \"%s\"",
-	
+
 	'answers:notify:body' => "Lien sur %s :\n%s",
 
 	'answers:question:comment:email:subject' => "Commenté la question : %s",
@@ -127,5 +128,5 @@ Lien du commentaire :
 ",
 
 );
-					
+
 add_translation("fr", $french);

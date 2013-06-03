@@ -174,7 +174,7 @@ function answers_clear_like_dislike($answer, $user_guid) {
 		'guid' => $answer->getGUID(),
 		'annotation_owner_guids' => $user_guid,
 	));
-	
+
 	if (is_array($annotations)) {
 		foreach ($annotations as $anno) {
 			$name = $anno->name;
@@ -197,7 +197,7 @@ function answers_get_question_answers($question) {
 	$options = array(
 		'relationship' => 'answer',
 		'relationship_guid' => $question->getGUID(),
-		'limit' => 0, // @todo Should enable pagination ?
+		'limit' => 0, // Should enable pagination ? No, with we use this function for deleting question. Make option ? @todo
 	);
 	return elgg_get_entities_from_relationship($options);
 }
@@ -213,7 +213,7 @@ function answers_get_sorted_question_answers($question, $sort = 'votes') {
 		$unsorted_dates[] = $answer->time_created;
 		$unsorted_actions[] = $answer->last_action;
 	}
-	
+
 	if ($sort == 'oldest') {
 		array_multisort($unsorted_dates, SORT_DESC,
 			$unsorted_ratings, SORT_DESC,
@@ -227,7 +227,7 @@ function answers_get_sorted_question_answers($question, $sort = 'votes') {
 			$unsorted_dates, SORT_ASC,
 			$unsorted_answers);
 	}
-	
+
 	return $unsorted_answers;
 }
 
@@ -251,7 +251,7 @@ function answers_get_sorted_questions($owner_guid, $sort = 'newest') {
 			$unsorted_actions[] = $question->last_action; // @todo: answer question or vote answer update question last_action ?
 			$unsorted_answers[] = answers_count_question_answers($question);
 		}
-		
+
 		if ($sort == 'votes') {
 			array_multisort($unsorted_ratings, SORT_DESC, // most voted
 				$unsorted_dates, SORT_ASC, // oldest
@@ -267,6 +267,6 @@ function answers_get_sorted_questions($owner_guid, $sort = 'newest') {
 				$unsorted_questions);
 		}
 	}
-	
+
 	return $unsorted_questions;
 }

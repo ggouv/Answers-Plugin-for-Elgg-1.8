@@ -4,7 +4,7 @@
  */
 
 $english = array(
-	
+
 	/**
 	 * Menu items and titles
 	 */
@@ -27,7 +27,7 @@ $english = array(
 	'answers:answer:tooltip:choose' => "choose this answer as best",
 	'answers:answer:tooltip:bestanswer' => "This answer was chosen as best answer by question's owner",
 	'answers:vote:tooltip:like' => "Vote this answer up",
-	'answers:vote:tooltip:dislike' => "Vote this answer down",	
+	'answers:vote:tooltip:dislike' => "Vote this answer down",
 	'answers:question:new' => "New question",
 	'answers:answer:new' => "New answer",
 	'answers:score:one' => "vote",
@@ -38,8 +38,8 @@ $english = array(
 	'answers:activity' => "Activity",
 	'answers:unanswered' =>"Unanswered",
 	'answers:oldest' => "Oldest",
-	
-	
+
+
 	/**
 	 * Forms
 	 */
@@ -53,8 +53,8 @@ $english = array(
 	'answers:search:submit_and_content' => "Check before the search results below to see whether the question is already covered. If not, you can ",
 	'answers:search:submit_no_content' => "There were no result matching the query. You can ",
 	'answers:search:no_content' => "There were no result matching the query.",
-	
-	
+
+
 	/**
 	 * Answers river
 	 */
@@ -77,12 +77,13 @@ $english = array(
 
 	/**
 	 * Status messages
-	 */	
+	 */
 	'answers:question:posted' => "Your question was successfully posted.",
 	'answers:answer:posted' => "Your answer was successfully posted.",
 	'answers:answer:updated' => "Your answer was successfully updated.",
 	'answers:answer:mustbeingroup' => "You must be a member of %s to answer or comment on this question.",
-	'answers:deleted' => "Deletion was successful.",
+	'answers:question:deleted' => "The question has been deleted.",
+	'answers:answer:deleted' => "The answer has been deleted.",
 	'answers:answer:chosen' => "Your favorite answer was successfully chosen.",
 	'answers:answer:notchosen' => "Your must be owner of the question to choose favorite answer.",
 
@@ -98,13 +99,13 @@ $english = array(
 	'answers:notdeleted' => "Sorry; deletion failed.",
 	'answers:vote:failure' => "Sorry; we failed to save your vote.",
 	'answers:vote:failure:owner' => "Sorry; you cannot vote your own.",
-	
+
 	/**
 	 * Email Notifications
 	 */
 	'answers:notify:question:subject' => "%s asked \"%s\"",
 	'answers:notify:answer:subject' => "%s answered the question \"%s\"",
-	
+
 	'answers:notify:body' => "Link to %s:\n%s",
 
 	'answers:question:comment:email:subject' => "Comment on question: %s",
@@ -127,5 +128,5 @@ Link to comment:
 ",
 
 );
-					
+
 add_translation("en", $english);
