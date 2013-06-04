@@ -171,17 +171,19 @@ function answers_setup_entity_menu_items($hook, $type, $menu, $params) {
 			}
 		}
 
-		// rewrite edit menu
-		$options = array(
-			'name' => 'edit',
-			'text' => '&#9998;', // unicode 270E
-			'title' => elgg_echo('edit:this'),
-			'class' => 'gwf tooltip s t',
-			'rel' => 'toggle',
-			'href' => "#edit-answer-{$params['entity']->guid}",
-			'priority' => 200,
-		);
-		$menu[] = ElggMenuItem::factory($options);
+		if ($entity->canEdit()) {
+			// rewrite edit menu
+			$options = array(
+				'name' => 'edit',
+				'text' => '&#9998;', // unicode 270E
+				'title' => elgg_echo('edit:this'),
+				'class' => 'gwf tooltip s t',
+				'rel' => 'toggle',
+				'href' => "#edit-answer-{$params['entity']->guid}",
+				'priority' => 200,
+			);
+			$menu[] = ElggMenuItem::factory($options);
+		}
 	}
 
 	return $menu;
