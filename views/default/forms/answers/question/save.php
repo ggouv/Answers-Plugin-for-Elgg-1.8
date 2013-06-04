@@ -6,7 +6,6 @@
 $title = elgg_extract('title', $vars, '');
 $desc = elgg_extract('description', $vars, '');
 $tags = elgg_extract('tags', $vars, '');
-$access_id = elgg_extract('access_id', $vars, ACCESS_DEFAULT);
 $container_guid = elgg_extract('container_guid', $vars);
 $guid = elgg_extract('guid', $vars, null);
 
@@ -32,11 +31,6 @@ $guid = elgg_extract('guid', $vars, null);
 		echo $categories;
 	}
 ?>
-
-<div>
-	<label><?php echo elgg_echo('access'); ?></label><br />
-	<?php echo elgg_view('input/access', array('name' => 'access_id', 'value' => $access_id)); ?>
-</div>
 
 <div class="elgg-foot">
 	<?php
