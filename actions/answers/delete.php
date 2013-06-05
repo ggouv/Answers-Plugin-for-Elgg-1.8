@@ -16,7 +16,7 @@ $subtype = $entity->getSubtype();
 
 elgg_load_library('answers:utilities');
 
-if ($subtype == 'question')) {
+if ($subtype == 'question') {
 	$owner = $entity->getOwnerEntity();
 	$forward_url = 'answers/owner/' . $owner->username;
 	$answers = answers_get_question_answers($entity);
@@ -25,7 +25,7 @@ if ($subtype == 'question')) {
 			$answer->delete(); // @todo answer of another user seems not deleted. Access problem ?
 		}
 	}
-} else if ($subtype == 'answer')) {
+} else if ($subtype == 'answer') {
 	$question = answers_get_question_for_answer($entity);
 	$forward_url = $question->getURL();
 } else {
