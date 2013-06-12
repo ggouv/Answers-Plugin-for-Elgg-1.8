@@ -32,6 +32,7 @@ if (!$friends = $owner->getFriends()) {
 		'subtype' => 'question',
 		'owner_guids' => $friendguids,
 		'full_view' => false,
+		'show_group' => true,
 		'pagination' => true,
 		'limit' => 10
 	));

@@ -11,6 +11,7 @@ $area2 = elgg_list_entities(array(
 	'type' => 'object',
 	'subtype' => 'question',
 	'full_view' => false,
+	'show_group' => true,
 ));
 $containerEntity = get_entity($page_owner->container_guid );
 

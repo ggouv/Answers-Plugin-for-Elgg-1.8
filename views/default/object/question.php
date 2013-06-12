@@ -7,6 +7,7 @@
 
 $full = elgg_extract('full_view', $vars, FALSE);
 $question = elgg_extract('entity', $vars, FALSE);
+$show_group = elgg_extract('show_group', $vars, FALSE);
 
 if (!$question) {
 	return TRUE;
@@ -24,6 +25,17 @@ $owner_link = elgg_view('output/url', array(
 ));
 $author_text = elgg_echo('byline', array($owner_link));
 $date = elgg_view_friendly_time($question->time_created);
+
+if ($show_group && elgg_instanceof($container, 'group')) {
+	$group_link = elgg_view('output/url', array(
+		'href' => $container->getURL(),
+		'text' => $container->name,
+		'is_trusted' => true,
+	));
+	$group_text = elgg_echo('groups:ingroup') . ' ' . $group_link;
+} else {
+	$group_text = '';
+}
 
 $comments_count = $question->countComments();
 //only display if there are commments
@@ -45,7 +57,7 @@ $metadata = elgg_view_menu('entity', array(
 	'class' => 'elgg-menu-hz',
 ));
 
-$subtitle = "$author_text $date $comments_link $categories";
+$subtitle = "$author_text $group_text $date $comments_link $categories";
 
 $params = array(
 	'entity' => $question,
