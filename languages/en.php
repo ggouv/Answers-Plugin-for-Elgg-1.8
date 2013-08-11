@@ -82,7 +82,7 @@ $english = array(
 	'answers:question:posted' => "Your question was successfully posted.",
 	'answers:answer:posted' => "Your answer was successfully posted.",
 	'answers:answer:updated' => "Your answer was successfully updated.",
-	'answers:answer:mustbeingroup' => "You must be a member of %s to answer or comment on this question.",
+	'answers:answer:mustbeingroup' => "You must be a member of %s to answer this question.",
 	'answers:question:deleted' => "The question has been deleted.",
 	'answers:answer:deleted' => "The answer has been deleted.",
 	'answers:answer:chosen' => "Your favorite answer was successfully chosen.",
@@ -92,14 +92,15 @@ $english = array(
 	 * Error messages
 	 */
 	'answers:question:blank' => "The question cannot be blank",
-	'answers:answer:blank' => "Sorry; your answer must not be blank.",
+	'answers:answer:blank' => "Sorry, your answer must not be blank.",
 	'answers:error' => 'Something went wrong. Please try again.',
 	'answers:answer:failure' => "Your answer could not be saved. Please try again.",
-	'answers:question:blank' => "Sorry; your question title can't be blank.",
-	'answers:notfound' => "Sorry; we could not find the specified question.",
-	'answers:notdeleted' => "Sorry; deletion failed.",
-	'answers:vote:failure' => "Sorry; we failed to save your vote.",
-	'answers:vote:failure:owner' => "Sorry; you cannot vote your own.",
+	'answers:question:blank' => "Sorry, your question title can't be blank.",
+	'answers:notfound' => "Sorry, we could not find the specified question.",
+	'answers:notdeleted' => "Sorry, deletion failed.",
+	'answers:vote:failure' => "Sorry, we failed to save your vote.",
+	'answers:vote:failure:owner' => "Sorry, you cannot vote your own.",
+	'answers:vote:failure:notmember' => "Sorry, you must join group to vote.",
 
 	/**
 	 * Email Notifications

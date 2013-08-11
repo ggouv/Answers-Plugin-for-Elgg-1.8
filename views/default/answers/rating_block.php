@@ -6,10 +6,11 @@
 
 $entity = $vars['entity'];
 $user_guid = elgg_get_logged_in_user_guid();
+$container_guid = elgg_get_page_owner_entity();
 
 $score = answers_overall_rating($entity);
 
-if ($entity->getOwnerGUID() != $user_guid) {
+if ($entity->getOwnerGUID() != $user_guid && $container_guid->canWriteToContainer()) {
 	$liked = answers_does_user_like_answer($entity, $user_guid) == 'like' ? ' liked' : '';
 	$up = elgg_view('output/url', array(
 		'text' => '<div class="gwf">↑</div>',

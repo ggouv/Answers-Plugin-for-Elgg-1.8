@@ -8,10 +8,18 @@ $entity_guid = (int) get_input('answer_guid');
 $user_guid = elgg_get_logged_in_user_guid();
 
 if ($entity = get_entity($entity_guid)) {
-	
-	// check if the user voted to an owned entity 
+
+	$container = get_entity($entity->container_guid);
+
+	// check if the user voted to an owned entity
 	if ($entity->getOwnerGUID() == $user_guid) {
 		register_error(elgg_echo('answers:vote:failure:owner'));
+		return true;
+	}
+
+	// check if user can vote on this group
+	if (!$container->canWriteToContainer()) {
+		register_error(elgg_echo('answers:vote:failure:notmember'));
 		return true;
 	}
 
