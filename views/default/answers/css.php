@@ -22,6 +22,7 @@
 	font-size: 3em;
 	color: #CCC;
 	text-decoration: none;
+	display: block;
 }
 .rating-block > a.answer_like:hover, .rating-block > a.answer_dislike:hover {
 	font-size: 4em;

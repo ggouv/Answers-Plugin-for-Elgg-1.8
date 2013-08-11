@@ -47,6 +47,7 @@ $french = array(
  	'answers:answer:add' => "Répondre à cette question",
 	'answers:answer:edit' => "Modifier la réponse",
 	'answers:answer:answer' => "Réponse",
+ 	'answers:search' => "Chercher une question :",
  	'answers:search_and_submit' => "Cherchez ou soumettez une question :",
 	'answers:charleft' => "caractères restants.",
 	'answers:search:skip_words' => "une,sans,avec,des,dans,pour,car,que,qui,mais,est,donc,elle,elles,nous,vous,ils,son,ses,ici,oui,non,toi,ton",

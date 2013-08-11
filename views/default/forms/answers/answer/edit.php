@@ -6,9 +6,10 @@
 $answer = elgg_extract('entity', $vars, false);
 
 if ($answer && elgg_is_logged_in()) {
-	
+	$container = get_entity($answer->container_guid);
+
 	if ($container instanceof ElggGroup && !$container->canWriteToContainer()) {
-		echo elgg_echo("answers:answer:mustbeingroup");
+		echo elgg_echo("answers:answer:mustbeingroup", array());
 	} else {
 		echo '<div>';
 		echo '<label class="mbm">' . elgg_echo('answers:answer:edit') . '</label>';

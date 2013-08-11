@@ -31,8 +31,8 @@ $vars = array(
 	'title' => $title,
 );
 
-if ($page_owner instanceof ElggGroup || $page_owner->guid == elgg_get_logged_in_user_guid()) {
-	$vars['filter'] = elgg_view('answers/search_and_submit_question');
+if ($page_owner instanceof ElggGroup) {
+	$vars['filter'] = elgg_view('answers/search_and_submit_question', array('owner' => $page_owner));
 	$vars['filter'].= elgg_view('answers/filter_questions', array(
 		'sort' => $sort
 	));

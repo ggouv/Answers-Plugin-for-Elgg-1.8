@@ -32,7 +32,7 @@ $tabs = array(
 		'priority' => 300,
 	),
 	'active' => array(
-		'text' => elgg_echo('active'),
+		'text' => elgg_echo('answers:activity'),
 		'href' => "?sort=active",
 		'selected' => ($filter_context == 'active'),
 		'priority' => 400,
@@ -41,7 +41,7 @@ $tabs = array(
 
 foreach ($tabs as $name => $tab) {
 	$tab['name'] = $name;
-	
+
 	elgg_register_menu_item('filter', $tab);
 }
 

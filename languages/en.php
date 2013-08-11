@@ -47,6 +47,7 @@ $english = array(
  	'answers:answer:add' => "Answer this question",
 	'answers:answer:edit' => "Edit answer",
 	'answers:answer:answer' => "Answer",
+	'answers:search' => "Search question :",
  	'answers:search_and_submit' => "Search or submit question:",
 	'answers:charleft' => "chars left.",
 	'answers:search:skip_words' => "the,and,for,are,but,not,you,all,any,can,her,was,one,our,out,day,get,has,him,his,how,man,new,now,old,see,two,way,who,boy,did,its,let,put,say,she,too,use,dad,mom", // write words you want to skip separate by coma. Automaticaly skip word less than 3 chars, don't write them.
