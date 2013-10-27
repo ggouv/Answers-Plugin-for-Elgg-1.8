@@ -46,5 +46,5 @@ if ($question) { // prevent error if question was been deleted
 	$vars['item']->summary = $summary;
 	$vars['item']->message = $excerpt;
 
-	$jsonexport['activity'][] = $vars['item'];
+	$jsonexport['results'][] = $vars['item'];
 }

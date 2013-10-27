@@ -45,4 +45,4 @@ $summary = elgg_echo("question:river:answer:comment", array($subject_link, $obje
 $vars['item']->summary = $summary;
 $vars['item']->message = $excerpt;
 
-$jsonexport['activity'][] = $vars['item'];
+$jsonexport['results'][] = $vars['item'];
