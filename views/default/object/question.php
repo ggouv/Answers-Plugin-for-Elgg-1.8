@@ -83,7 +83,7 @@ if ($full === true) {
 	));
 
 	$question_info = elgg_view_image_block($owner_icon, $summary, array('class' => 'mbs'));
-	
+
 	$question_comments = elgg_list_annotations(array(
 		'guid' => $question->getGUID(),
 		'annotation_name' => 'generic_comment',
@@ -93,7 +93,7 @@ if ($full === true) {
 	if (elgg_is_logged_in()) {
 		$question_add_comment = elgg_view('answers/comment_toggle', $vars);
 	}
-		
+
 	echo <<<HTML
 <div id="elgg-object-{$question->guid}" class="elgg-item-question">
 	$rating_block
@@ -111,33 +111,33 @@ HTML;
 } else {
 	// brief view
 	elgg_load_library('answers:utilities'); // need it for brief view in group module
-	
+
 	$score = answers_overall_rating($question);
 	if ($score > 1) {
 		$score_text = elgg_echo('answers:score:more');
 	} else {
 		$score_text = elgg_echo('answers:score:one');
 	}
-	
+
 	$num_answers = answers_count_question_answers($question);
 	if ($num_answers > 1) {
 		$answers_text = elgg_echo('answers:answers');
 	} else {
 		$answers_text = elgg_echo('answers:answer');
 	}
-	
+
 	$answers_link = elgg_view('output/url', array(
 		'text' => "<div>$num_answers</div>$answers_text",
 		'href' => $question->getURL() . '#question-answers',
 	));
-	
+
 	$rating_block = <<<HTML
 <div class="rating-block float center">
 	<div class="briefscore">
 		<div class="pvs">$score</div>
 		$score_text
 	</div>
-	<div class="answers">
+	<div class="nbr-answers">
 		$answers_link
 	</div>
 </div>
@@ -147,7 +147,7 @@ HTML;
 		'text' => $question->title,
 		'href' => $question->getURL(),
 	));
-	
+
 	if ( $full != 'searched') {
 		$content = elgg_get_excerpt($question->description, '300');
 	} else {

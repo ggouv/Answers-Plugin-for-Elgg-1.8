@@ -34,7 +34,10 @@ if ($guid) {
 	$question->subtype = 'question';
 	$new = true;
 }
-$question->access_id = ACCESS_PUBLIC;
+
+$container = get_entity($container_guid);
+
+$question->access_id = $container->group_acl;
 $question->title = $title;
 $question->description = $description;
 $question->tags = string_to_tag_array($tags);

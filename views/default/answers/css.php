@@ -61,15 +61,15 @@
 .elgg-list .rating-block .briefscore > div {
 	font-size: 2em;
 }
-.elgg-list .rating-block .answers {
+.elgg-list .rating-block .nbr-answers {
 	font-size: 0.8em;
 	padding-top: 2px;
 	cursor: pointer;
 }
-.elgg-list .rating-block .answers a {
+.elgg-list .rating-block .nbr-answers a {
 	text-decoration: none;
 }
-.elgg-list .rating-block .answers div {
+.elgg-list .rating-block .nbr-answers div {
 	font-size: 1.8em;
 }
 
